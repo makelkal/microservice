@@ -29,4 +29,15 @@ services:
     ports:
       - "8989:8989"
 
-
+  hub:
+    container_name: hub
+    image: selenium/hub:2.48.1
+    ports:
+      - "4444:4444"
+    expose:
+      - "4444"
+  firefox:
+    container_name: firefox
+    image: selenium/node-firefox:2.48.1
+    environment:
+     - HUB_PORT_4444_TCP_ADDR=hub

@@ -1,0 +1,60 @@
+*** Settings ***
+Library                 Collections
+Library                 String
+Library                 Selenium2Library    10.0  1.0      #timeout, implicit_wait
+Library                 OperatingSystem
+Resource                variables.txt
+Suite Setup             Setup Connections and Environment
+#Suite Teardown          Delete Connections and stop Environment
+Test Teardown           General Test Teardown
+
+
+*** Test Cases ***
+Microservice-demo Add New Customer
+    [Documentation]
+    [Tags]  REGRESSION
+#    Given Andon Engine Is Connected to Go Server
+    Given Microservice-demo Customer View is Accessible
+    When New Customer is Created
+    Then I can verify Newly Added Customer and then Remove it
+
+*** Keywords ***
+Microservice-demo Customer View is Accessible
+	Navigate Customer View
+
+Navigate Customer View
+	Run Keyword And Ignore Error  Click Link  Home
+	Click Link  Customer
+	Page Should Contain  Customer : View all
+
+New Customer is Created
+	Click Link  Add Customer
+	Fill Values to Customer Form
+	Run Keyword If    ${DEBUG LEVEL}==1    Capture Page Screenshot    
+	Click Button  Submit
+	Page Should Contain  Success
+
+Fill Values to Customer Form
+	Input Text  name  Robot
+	Input Text  firstname  Framework
+	Input Text  email  rorbot.framework@tieto.com
+	Input Text  street  Hvt
+	Input Text  city  Tampere
+	
+I can verify Newly Added Customer and then Remove it
+	Navigate Customer View
+	Run Keyword If    ${DEBUG LEVEL}==1    Capture Page Screenshot    
+	Page Should Contain  Robot
+	Page Should Contain  Framework
+	Click Button  //td[text()="Robot"]/..//input[@value="delete" and @type="submit"]
+	Page Should Contain  Success
+
+Microservice-demo Should Be Accessible
+    Wait Until Keyword Succeeds  ${MAX_WAIT_TIME}  1s     Microservice-demo Front Page Should Be loaded
+
+Microservice-demo Front Page Should Be loaded
+    Open Browser  ${SUT}  ${BROWSER}  ${EMPTY}  ${SELENIUM_GRID_URL}
+    Page Should Contain   Order Processing
+
+Setup Connections and Environment
+	Microservice-demo Should Be Accessible

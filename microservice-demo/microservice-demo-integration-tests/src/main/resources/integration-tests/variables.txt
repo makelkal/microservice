@@ -1,0 +1,15 @@
+*** Variables ***
+# Test environment settings 
+${SUT_HOST}     		andonmaster.andonsandbox.pdcloud.int.tieto.com
+${SUT_PORT}     		8080
+${SUT}          		http://${SUT_HOST}:${SUT_PORT}
+
+# Selenium settings
+${SELENIUM_GRID_HOST}   andonmaster.andonsandbox.pdcloud.int.tieto.com
+${SELENIUM_GRID_PORT}   4444
+${SELENIUM_GRID_URL}    http://${SELENIUM_GRID_HOST}:${SELENIUM_GRID_PORT}/wd/hub
+${BROWSER}              Firefox
+${MAX_WAIT_TIME}        300s
+
+# General test settings
+${DEBUG LEVEL}          1

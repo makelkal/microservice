@@ -1,0 +1,16 @@
+compile_and_unit_tests:
+  build_cmd: mvn -X clean install
+  build_path: /test
+  go_cd_agent_props:
+    - java
+    - maven
+
+docker_image_build_for_integration_testing:
+  build_path: .
+  dockerfile_name: Dockerfile
+  image_tag: GO_REVISION
+
+integration_testing:
+  compose_file_path: /src/main/resources/apitest
+  compose_file_name: docker-compose.yml
+  test_cmd: mvn -P robot org.robotframework:robotframework-maven-plugin:run

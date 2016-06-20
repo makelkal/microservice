@@ -1,14 +1,14 @@
 *** Variables ***
 # Test environment settings 
-${SUT_HOST}     		localhost
+${SUT_HOST}     		zuul
 ${SUT_PORT}     		8080
 ${SUT}          		http://${SUT_HOST}:${SUT_PORT}
 
 # Selenium settings
-${SELENIUM_GRID_HOST}   localhost
+${SELENIUM_GRID_HOST}   192.168.1.112
 ${SELENIUM_GRID_PORT}   4444
 ${SELENIUM_GRID_URL}    http://${SELENIUM_GRID_HOST}:${SELENIUM_GRID_PORT}/wd/hub
-${BROWSER}              Chrome
+${BROWSER}              ff
 ${MAX_WAIT_TIME}        20s
 
 # General test settings

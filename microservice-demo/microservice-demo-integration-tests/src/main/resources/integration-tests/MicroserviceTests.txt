@@ -6,7 +6,7 @@ Library                 OperatingSystem
 Resource                variables.txt
 Suite Setup             Setup Connections and Environment
 #Suite Teardown          Delete Connections and stop Environment
-Test Teardown           General Test Teardown
+#Test Teardown           General Test Teardown
 
 
 *** Test Cases ***
@@ -50,11 +50,11 @@ I can verify Newly Added Customer and then Remove it
 	Page Should Contain  Success
 
 Microservice-demo Should Be Accessible
-    Wait Until Keyword Succeeds  ${MAX_WAIT_TIME}  1s     Microservice-demo Front Page Should Be loaded
+    Wait Until Keyword Succeeds  ${MAX_WAIT_TIME}  10s     Microservice-demo Front Page Should Be loaded
 
 Microservice-demo Front Page Should Be loaded
     Open Browser  ${SUT}  ${BROWSER}  ${EMPTY}  ${SELENIUM_GRID_URL}
-    Page Should Contain   Order Processing
+    Wait Until Page Contains  Order Processing
 
 Setup Connections and Environment
 	Microservice-demo Should Be Accessible

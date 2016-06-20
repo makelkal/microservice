@@ -31,13 +31,22 @@ services:
 
   hub:
     container_name: hub
-    image: selenium/hub:2.48.1
+    image: selenium/hub:latest
     ports:
       - "4444:4444"
     expose:
       - "4444"
   firefox:
     container_name: firefox
-    image: selenium/node-firefox:2.48.1
+    image: selenium/node-firefox:latest
+    expose:
+      - "5555"
+    environment:
+     - HUB_PORT_4444_TCP_ADDR=hub
+  chrome:
+    container_name: chrome
+    image: selenium/node-chrome:latest
+    expose:
+      - "5555"
     environment:
      - HUB_PORT_4444_TCP_ADDR=hub

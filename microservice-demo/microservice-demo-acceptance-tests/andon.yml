@@ -1,0 +1,48 @@
+acceptance_testing:
+  dependency:
+   - Catalog_master [CompileAndUnitTests]
+   - Customer_master [CompileAndUnitTests]
+   - Order_master [CompileAndUnitTests]
+  compose_file_path: /src/test/resources
+  compose_file_name: docker-compose.yml
+  
+#  cron_timer: 0 0 22 ? * MON-FRI
+  
+  tests:
+    - test_commands:
+      - mvn -P robot -D variable.robot=SUT_HOST:zuul,SUT_PORT:8080,BROWSER=chrome org.robotframework:robotframework-maven-plugin:run
+      - mvn -P robot -D variable.robot=SUT_HOST:zuul,SUT_PORT:8080,BROWSER=firefox org.robotframework:robotframework-maven-plugin:run
+      type: parallel
+      test_services:
+        selenium_grid: true
+#        service_virtualization: true
+    - test_commands:
+      - true
+      - true
+      - true
+      type: serial
+      test_services:
+        selenium_grid: true
+        service_virtualization: false
+    
+  selenium_grid_browsers:
+    - name: chrome
+      amount: 1
+      version: "latest"
+    - name: firefox
+      amount: 1
+      version: "latest"
+
+#  service_virtualization:
+#    mari_file_name: bookapprest.mari
+#    mari_file_path: src/test/resources/service-virtualization/VirtualServices
+  
+#production:
+#  dependency:
+#   - Bookapp Acceptance Testing[AcceptanceTestStage]
+#  trigger_mode: manual
+#  custom_cmd:
+#    - sudo docker rm -f bookapp_rest
+#    - sudo docker rm -f bookapp_jsf
+#    - sudo docker run -d -p 8081:8080 --name=bookapp_rest bookapp_rest
+#    - sudo docker run -d -p 8082:8080 --name=bookapp_jsf bookapp_jsf

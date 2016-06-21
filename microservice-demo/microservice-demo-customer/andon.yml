@@ -2,6 +2,6 @@ compile_and_unit_tests:
   build_cmd: mvn install
   build_path: .
   go_cd_agent_props:
-    - java:8
+    - java8
     - maven
   sonarqube: true

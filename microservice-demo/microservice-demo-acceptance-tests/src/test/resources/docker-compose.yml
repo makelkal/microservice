@@ -1,7 +1,7 @@
 version: '2'
 services:
   eureka:
-    build: eureka_server
+    image: eureka_server
     expose:
       - "8761"
   customer:

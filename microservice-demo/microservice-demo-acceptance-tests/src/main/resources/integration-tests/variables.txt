@@ -9,7 +9,7 @@ ${SELENIUM_GRID_HOST}   hub
 ${SELENIUM_GRID_PORT}   4444
 ${SELENIUM_GRID_URL}    http://${SELENIUM_GRID_HOST}:${SELENIUM_GRID_PORT}/wd/hub
 ${BROWSER}              ff
-${MAX_WAIT_TIME}        20s
+${MAX_WAIT_TIME}        300s
 
 # General test settings
 ${DEBUG LEVEL}          1

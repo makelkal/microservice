@@ -1,25 +1,27 @@
 version: '2'
 services:
   eureka:
-    image: eureka_server
-    expose:
-      - "8761"
+    image: eureka
+    ports:
+      - "8761:8761"
   customer:
     image: customer
-    expose:
-      - "8080" 
+    links:
+     - eureka
   catalog:
     image: catalog
-    expose:
-      - "8080" 
+    links:
+     - eureka
   order:
     image: order
-    expose:
-      - "8080" 
+    links:
+     - eureka
   zuul:
-    image: zuul_server
-    expose:
-      - "8080" 
+    image: zuul
+    links:
+     - eureka
+    ports:
+      - "8080:8080"
 #  turbine:
 #    build: turbineserver
 #    links:

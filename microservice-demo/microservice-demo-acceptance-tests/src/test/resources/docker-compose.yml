@@ -1,11 +1,11 @@
 version: '2'
 services:
   eureka:
-    build: eurekaserver
+    build: eureka_server
     expose:
       - "8761"
   customer:
-    iamge: customer
+    image: customer
     expose:
       - "8080" 
   catalog:
@@ -17,12 +17,12 @@ services:
     expose:
       - "8080" 
   zuul:
-    image: zuulserver
+    image: zuul_server
     expose:
       - "8080" 
-  turbine:
-    build: turbineserver
-    links:
-     - eureka
-    ports:
-      - "8989:8989"
+#  turbine:
+#    build: turbineserver
+#    links:
+#     - eureka
+#    ports:
+#      - "8989:8989"

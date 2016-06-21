@@ -16,14 +16,14 @@ acceptance_testing:
       test_services:
         selenium_grid: true
 #        service_virtualization: true
-    - test_commands:
-      - true
-      - true
-      - true
-      type: serial
-      test_services:
-        selenium_grid: true
-        service_virtualization: false
+#    - test_commands:
+#      - true
+#      - true
+#      - true
+#      type: serial
+#      test_services:
+#        selenium_grid: true
+#        service_virtualization: false
     
   selenium_grid_browsers:
     - name: chrome

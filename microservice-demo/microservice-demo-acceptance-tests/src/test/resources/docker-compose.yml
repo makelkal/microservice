@@ -2,8 +2,8 @@ version: '2'
 services:
   eureka:
     image: eureka
-    ports:
-      - "8761:8761"
+    expose:
+      - "8761"
   customer:
     image: customer
     links:
@@ -20,8 +20,8 @@ services:
     image: zuul
     links:
      - eureka
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
 #  turbine:
 #    build: turbineserver
 #    links:

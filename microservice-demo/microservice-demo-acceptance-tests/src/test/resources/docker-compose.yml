@@ -1,7 +1,7 @@
 version: '2'
 services:
   eureka:
-    build: eureka-server
+    build: eurekaserver
     expose:
       - "8761"
   customer:
@@ -17,11 +17,11 @@ services:
     expose:
       - "8080" 
   zuul:
-    image: zuul-server
+    image: zuulserver
     expose:
       - "8080" 
   turbine:
-    build: turbine-server
+    build: turbineserver
     links:
      - eureka
     ports:

@@ -1,8 +1,8 @@
 acceptance_testing:
-  dependency:
-   - Catalog_master [CompileAndUnitTests]
-   - Customer_master [CompileAndUnitTests]
-   - Order_master [CompileAndUnitTests]
+#  dependency:
+#   - Catalog_master [CompileAndUnitTests]
+#   - Customer_master [CompileAndUnitTests]
+#   - Order_master [CompileAndUnitTests]
   compose_file_path: /src/test/resources
   compose_file_name: docker-compose.yml
   

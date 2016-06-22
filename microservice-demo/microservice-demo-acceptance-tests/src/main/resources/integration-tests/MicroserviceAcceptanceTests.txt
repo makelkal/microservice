@@ -25,7 +25,7 @@ Microservice-demo Customer View is Accessible
 Navigate Customer View
 	Run Keyword And Ignore Error  Click Link  Home
 	Click Link  Customer
-	Reload Page
+	Go Back
 	Click Link  Customer
 	Page Should Contain  Customer : View all
 

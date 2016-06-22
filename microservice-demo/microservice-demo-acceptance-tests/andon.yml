@@ -37,12 +37,12 @@ acceptance_testing:
 #    mari_file_name: bookapprest.mari
 #    mari_file_path: src/test/resources/service-virtualization/VirtualServices
   
-#production:
-#  dependency:
-#   - Bookapp Acceptance Testing[AcceptanceTestStage]
-#  trigger_mode: manual
-#  custom_cmd:
-#    - sudo docker rm -f bookapp_rest
+production:
+  dependency:
+   - Microservice_Acceptance [AcceptanceTestStage]
+  trigger_mode: manual
+  custom_cmd:
+    - true
 #    - sudo docker rm -f bookapp_jsf
 #    - sudo docker run -d -p 8081:8080 --name=bookapp_rest bookapp_rest
 #    - sudo docker run -d -p 8082:8080 --name=bookapp_jsf bookapp_jsf

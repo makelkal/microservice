@@ -24,10 +24,10 @@ Microservice-demo Customer View is Accessible
 
 Navigate Customer View
 	Run Keyword And Ignore Error  Click Link  Home
-	Click Link  Customer
+	Wait Until Keyword Succeeds  ${MAX_WAIT_TIME}  20s     Click Link  Customer
 	Go Back
-	Click Link  Customer
-	Page Should Contain  Customer : View all
+	Wait Until Keyword Succeeds  ${MAX_WAIT_TIME}  20s     Click Link  Customer
+	Wait Until Keyword Succeeds  ${MAX_WAIT_TIME}  20s     Page Should Contain  Customer : View all
 
 New Customer is Created
 	Click Link  Add Customer

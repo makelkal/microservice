@@ -3,6 +3,7 @@ acceptance_testing:
    - Catalog [CompileAndUnitTests]
    - Customer [CompileAndUnitTests]
    - Order [CompileAndUnitTests]
+   - Zuul [CompileAndUnitTests]
   compose_file_path: /src/test/resources
   compose_file_name: docker-compose.yml
   

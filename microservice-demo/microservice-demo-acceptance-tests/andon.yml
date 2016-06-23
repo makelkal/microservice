@@ -43,8 +43,8 @@ production:
    - Microservice_Acceptance [AcceptanceTestStage]
   trigger_mode: manual
   custom_cmd:
-    - docker tag catalog eekamak/catalog
-    - docker push eekamak/catalog
+    - sudo docker tag catalog eekamak/catalog
+    - sudo docker push eekamak/catalog
 #    - sudo docker rm -f bookapp_jsf
 #    - sudo docker run -d -p 8081:8080 --name=bookapp_rest bookapp_rest
 #    - sudo docker run -d -p 8082:8080 --name=bookapp_jsf bookapp_jsf

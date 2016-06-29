@@ -29,21 +29,21 @@ services:
     ports:
       - "8989:8989"
 
-  hub:
-    image: selenium/hub:latest
-    ports:
-      - "4444:4444"
-    expose:
-      - "4444"
-  firefox:
-    image: selenium/node-firefox:latest
-    expose:
-      - "5555"
-    environment:
-     - HUB_PORT_4444_TCP_ADDR=hub
-  chrome:
-    image: selenium/node-chrome:latest
-    expose:
-      - "5555"
-    environment:
-     - HUB_PORT_4444_TCP_ADDR=hub
+#  hub:
+#    image: selenium/hub:latest
+#    ports:
+#      - "4444:4444"
+#    expose:
+#      - "4444"
+#  firefox:
+#    image: selenium/node-firefox:latest
+#    expose:
+#      - "5555"
+#    environment:
+#     - HUB_PORT_4444_TCP_ADDR=hub
+#  chrome:
+#    image: selenium/node-chrome:latest
+#    expose:
+#      - "5555"
+#    environment:
+#     - HUB_PORT_4444_TCP_ADDR=hub

@@ -80,4 +80,35 @@
 
 	</dependencies>
 
+    <build>
+        
+        <plugins>
+	        <plugin>
+	          <groupId>org.robotframework</groupId>
+	          <artifactId>robotframework-maven-plugin</artifactId>
+	          <version>1.4.6</version>
+	          <executions>
+	            <execution>
+	              <goals>
+	                <goal>run</goal>
+	              </goals>
+	            </execution>
+	          </executions>
+	          <configuration>
+	            <testCasesDirectory>${project.basedir}/src/test/resources/robotframework/integration-tests</testCasesDirectory>
+	            <extraPathDirectories>
+	              <extraPathDirectory>${project.basedir}/src/test/resources/libraries</extraPathDirectory>
+	            </extraPathDirectories>
+	            <!--includes_cli>${robot.tag}</includes_cli -->
+	           <variableFiles>
+	           <!--    <variableFile>${project.basedir}/src/main/resources/environment_variables.py</variableFile> -->
+	           </variableFiles>
+	           <variables>
+	               <!--variable>BROWSER:${robot.browser}</variable>-->
+	          </variables>
+	          </configuration>
+	        </plugin>
+        </plugins>
+    
+    </build>
 </project>

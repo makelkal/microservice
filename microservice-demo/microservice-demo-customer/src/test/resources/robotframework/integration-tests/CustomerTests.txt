@@ -65,10 +65,11 @@ Post JSON data  [Arguments]  ${uri}  ${data}
   [Return]  ${actual} 
 
 Customer exists at the database
-  # does nothing
+  Log       "Huhuu"       
+#TBD
 
 Customer name should be "${name}"
-  Should Be Equal As Strings  ${JSON_RESULT['name']}  ${name}
+  Should Be Equal As Strings  ${JSON_CUSTOMER['name']}  ${name}
 
 Firstname should be "${lastname}"
 

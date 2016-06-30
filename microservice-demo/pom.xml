@@ -21,6 +21,7 @@
 		<module>microservice-demo-catalog</module>
 		<module>microservice-demo-order</module>
 		<module>microservice-demo-zuul-server</module>
+                <module>microservice-demo-acceptance-tests</module>
 	</modules>
 
 	<properties>

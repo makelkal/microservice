@@ -1,0 +1,11 @@
+version: '2'
+services:
+  eureka:
+    image: ms_eureka
+  customer:
+    build: ../../../../.
+    image: ms_customer
+    links:
+     - eureka
+    ports:
+     - "9000:8080"

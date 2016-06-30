@@ -8,16 +8,16 @@ Suite Setup     Initialize Session
 Suite Teardown  Close All Sessions
 
 *** Variables ***
-${SERVICE_URL}          http://localhost:8080
+${SERVICE_URL}          http://localhost:9000
 
 *** Test Cases ***
 List customer info from database
   Given Customer exists at the database
   When I get the customer through REST API
-  Then customer name should be "Wolff"
-   and firstname should be "Eberhard"
+  Then customer name should be "Eberhard"
+   and firstname should be "Wolff"
    and email should be "eberhard.wolff@gmail.com"
-   and strees should be "Unter den Linden"
+   and street should be "Unter den Linden"
    and city should be "Berlin"
   
  *** Keywords ***
@@ -37,12 +37,12 @@ Initialize Session
 
 I get the Customer through REST API  [Arguments]  ${cust_id}=1  
   [Documentation]  
-  ${result}=  Get JSON data  /customer/customer  ${cust_id}
+  ${result}=  Get JSON data  /customer  ${cust_id}
   Set Test Variable  ${JSON_CUSTOMER}  ${result}
 
 I Add The Customer Through REST API
   ${data}=  Replace Variables  ${FORM}
-  ${result}=  Post JSON data  /customer/customer  ${data}
+  ${result}=  Post JSON data  /customer  ${data}
  
 
 Get JSON data  [Arguments]   ${uri}  ${cust_id}
@@ -70,10 +70,10 @@ Customer exists at the database
 #TBD
 
 Customer name should be "${name}"
-  Should Be Equal As Strings  ${JSON_CUSTOMER['name']}  ${name}
+  Should Be Equal As Strings  ${JSON_CUSTOMER['firstname']}  ${name}
 
 Firstname should be "${lastname}"
-    Should Be Equal As Strings  ${JSON_CUSTOMER['lastname']}  ${lastname}
+    Should Be Equal As Strings  ${JSON_CUSTOMER['name']}  ${lastname}
 
 Email should be "${email}"
     Should Be Equal As Strings  ${JSON_CUSTOMER['email']}  ${email}

@@ -30,6 +30,7 @@ Get JSON Form  [Arguments]  ${form}
 
 Initialize Session
   [Documentation]  Creates context for REST API calls. 
+  Set Log Level         TRACE
   ${headers}=  Create Dictionary  Content-type=application/json  Accept=*/*  Accept-language=en-US,en;fi  Cache-control=no-cache
   Set Suite Variable  ${HEADERS}  ${headers}
   Create Session  appsrv  ${SERVICE_URL}  headers=${headers}  

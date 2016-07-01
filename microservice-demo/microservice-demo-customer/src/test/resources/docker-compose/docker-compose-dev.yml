@@ -7,5 +7,5 @@ services:
     image: ms_customer
     links:
      - eureka
-    expose:
-     - "8080"
+    ports:
+     - "9000:8080"

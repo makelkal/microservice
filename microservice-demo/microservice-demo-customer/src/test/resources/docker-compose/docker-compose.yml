@@ -3,7 +3,6 @@ services:
   eureka:
     image: ms_eureka
   customer:
-    build: ../../../../.
     image: ms_customer
     links:
      - eureka

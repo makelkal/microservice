@@ -10,7 +10,7 @@ Suite Setup             Setup Connections and Environment
 
 
 *** Test Cases ***
-Microservice-demo Add New Customer
+Microservice-demo Add New Customer and Remove It
     [Documentation]
     [Tags]  REGRESSION
 #    Given Andon Engine Is Connected to Go Server
@@ -18,10 +18,93 @@ Microservice-demo Add New Customer
     When New Customer is Created
     Then I can verify Newly Added Customer and then Remove it
 
+Microservice-demo Add an Item to Catalog and Remove It
+     [Tags]     REGRESSION
+     #    Given Andon Engine Is Connected to Go Server
+    Given Microservice-demo Catalog List View is Accessible
+    Given Microservice-demo Catalog Search View is Accessible
+    Then I Can Add a New Item "Sony Walkman TPS-L2" Costing "300" in Catalog and Remove It
+
+Microservice-demo Add an Order and Remove It
+    [Tags]     REGRESSION
+    #    Given Andon Engine Is Connected to Go Server
+    Given Microservice-demo Order View is Accessible
+    Then I Can Add a New Order  "New Order" and Remove It
+
 *** Keywords ***
 Microservice-demo Customer View is Accessible
 	Navigate Customer View
 
+Microservice-demo Catalog List View is Accessible
+        Verify I am on Homepage  
+        Wait Until Element Is Visible       ${LIST_ITEMS_CATALOG_LINK}     timeout=20 seconds
+        Click Element      ${ADD_ITEMS_CATALOG_LINK} 
+        Wait Until Page Contains      Item : View all       timeout=20 seconds
+        Click Link          Home
+        Wait Until Page Contains        Order Processing        timeout=20 seconds
+
+Microservice-demo Catalog Search View is Accessible
+        Verify I am on Homepage
+        Wait Until Element Is Visible       ${SEARCH_ITEMS_CATALOG_LINK}     timeout=20 seconds
+        Click Element      ${SEARCH_ITEMS_CATALOG_LINK} 
+        Wait Until Page Contains      Search for Item by Name       timeout=20 seconds
+        Go Back
+        Wait Until Page Contains        Order Processing        timeout=20 seconds
+
+Microservice-demo Order View is Accessible
+        Verify I am on Homepage
+        Click Link         Order
+        Wait Until Page Contains        Order : View all        timeout=20 seconds
+        Click Link          Home
+        Wait Until Page Contains        Order Processing        timeout=20 seconds
+        
+I Can Add a New Item "${item}" Costing "${price}" in Catalog and Remove It
+        Add Item "${item}" Costing "${price}" in Catalog
+        Delete Item "${item}" from Catalog
+        Verify Item "${item}" Does Not Exist
+
+Add Item "${item}" Costing "${price}" in Catalog
+        Wait Until Element Is Visible       ${LIST_ITEMS_CATALOG_LINK}     timeout=20 seconds
+        Click Element      ${LIST_ITEMS_CATALOG_LINK} 
+        Wait Until Page Contains      Item : View all       timeout=20 seconds
+        Wait Until Page Contains           Add Item     timeout=20 seconds
+        Click Link     Add Item
+        Wait Until Element Is Visible      id=name    timeout=20 seconds
+        Input Text      id=name    ${item}  
+        Input Text      id=price   ${price}   
+        Click Button      Submit
+        Wait Until Page Contains       Success      timeout=20 seconds     
+        Click Link          Home
+
+Delete Item "${item}" from Catalog
+        Wait Until Element Is Visible       ${SEARCH_ITEMS_CATALOG_LINK}     timeout=20 seconds
+        Click Element      ${SEARCH_ITEMS_CATALOG_LINK} 
+        Wait Until Element Is Visible      ${SEARCH_ITEMS_FIELD}       timeout=20 seconds
+        Input Text      ${SEARCH_ITEMS_FIELD}      ${item}
+        Click Button        Submit
+        Wait Until Page Contains        ${item}        timeout=20 seconds  
+        Click Button       delete
+        Wait Until Page Contains       Success        timeout=20 seconds
+        Click Link          Home
+
+Verify Item "${item}" Does Not Exist
+        Wait Until Element Is Visible       ${SEARCH_ITEMS_CATALOG_LINK}     timeout=20 seconds
+        Click Element      ${SEARCH_ITEMS_CATALOG_LINK} 
+        Wait Until Element Is Visible      ${SEARCH_ITEMS_FIELD}       timeout=20 seconds
+        Input Text      ${SEARCH_ITEMS_FIELD}      ${item}
+        Click Button        Submit
+        Wait Until Page Contains     No items       timeout=20 seconds  
+        Click Link          Home
+
+I Can Add a New Order "${order}" and Remove It
+        Wait Until Page Contains          Order      timeout=20 seconds
+        #TBD
+
+Verify I am on Homepage
+        ${on_homepage}=         Run Keyword And Return Status       Wait Until Page Contains   Order Processing     timeout=5 seconds 
+        Run Keyword If     '${on_homepage}' == 'false'      Click Link          Home
+        Wait Until Page Contains        Order Processing        timeout=20 seconds  
+        
 Navigate Customer View
 	Run Keyword And Ignore Error  Click Link  Home
 	Wait Until Keyword Succeeds  ${MAX_WAIT_TIME}  20s     Click Link  Customer

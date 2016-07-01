@@ -13,3 +13,8 @@ ${MAX_WAIT_TIME}        300s
 
 # General test settings
 ${DEBUG LEVEL}          1
+
+# Domain-related variables
+${LIST_ITEMS_CATALOG_LINK}          //a[@href='/catalog/list.html']
+${SEARCH_ITEMS_CATALOG_LINK}        //a[@href='/catalog/searchForm.html']   
+${SEARCH_ITEMS_FIELD}               //form[@action='searchByName.html']/div[1]/div[2]/input

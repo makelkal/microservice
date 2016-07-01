@@ -7,6 +7,9 @@
 		<artifactId>microservice-demo</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	<properties>
+	 <service_url>http://localhost:9000</service_url>
+	</properties>
 
 	<artifactId>microservice-demo-customer</artifactId>
 
@@ -115,7 +118,7 @@
 		           <!--    <variableFile>${project.basedir}/src/main/resources/environment_variables.py</variableFile> -->
 		           </variableFiles>
 		           <variables>
-		               <!--variable>BROWSER:${robot.browser}</variable>-->
+		               <variable>SERVICE_URL:${service_url}</variable>
 		          </variables>
 		          </configuration>
 		        </plugin>

@@ -13,5 +13,5 @@ docker_image_build_for_integration_testing:
 integration_testing:
   compose_file_path: /src/test/resources/docker-compose
   compose_file_name: docker-compose.yml
-  test_cmd: mvn -P Robot -D variable.robot=SUT_HOST:customer,SUT_PORT:8080 install 
+  test_cmd: mvn -P Robot -D service_url=http://customer:8080 install 
   

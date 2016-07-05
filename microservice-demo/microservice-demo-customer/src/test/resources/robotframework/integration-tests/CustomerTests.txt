@@ -88,6 +88,21 @@ Post JSON data  [Arguments]  ${uri}  ${data}
   Log  ${actual}
   [Return]  ${actual} 
 
+Put JSON data  [Arguments]  ${uri}  ${data}
+  [Documentation]  Update existing data through REST api
+  Log  ${data}
+  ${resp}=  Put Request  appsrv  ${uri}  data=${data}
+  Should Be Equal As Strings  ${resp.status_code}  200
+  ${actual}=  To Json  ${resp.content}
+  Log  ${actual}
+  [Return]  ${actual} 
+
+Delete JSON data  [Arguments]  ${uri}  ${cust_id}
+  [Documentation]  Removes the object identfied by id through REST api
+  Log  ${cust_id}
+  ${resp}=  Delete Request  appsrv  ${uri}/${cust_id}
+  Should Be Equal As Strings  ${resp.status_code}  204
+
 Customer exists at the database
     Log  ""   
 

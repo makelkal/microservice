@@ -9,3 +9,9 @@ compile_and_unit_tests:
 docker_image_build_for_integration_testing:
   build_path: .
   dockerfile_name: Dockerfile
+
+integration_testing:
+  compose_file_path: /src/test/resources/docker-compose
+  compose_file_name: docker-compose.yml
+  test_cmd: mvn -P Robot -D service_url=http://customer:8080 install 
+  

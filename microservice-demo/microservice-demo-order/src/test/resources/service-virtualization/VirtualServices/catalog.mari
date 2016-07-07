@@ -3,7 +3,7 @@
 <MarInfo>
 <name>catalog</name>
 <type>VIRTUAL_SERVICE</type>
-<projectRoot>ms-catalog</projectRoot>
+<projectRoot>service-virtualization</projectRoot>
 <optimized>true</optimized>
 <deployInfo>
     <PrimaryAsset>VirtualServices/catalog.vsm</PrimaryAsset>

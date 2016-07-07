@@ -14,7 +14,7 @@
        <robot.browser>chrome</robot.browser>                           <!-- Local default browser -->
        <robot.tag></robot.tag>
        <robot.remote_url>None</robot.remote_url>                        <!-- Selenium GRID hub address -->
-       <robot.url>http://localhost:9001/form</robot.url>                   <!-- SUT -->
+       <robot.url>http://localhost:9001</robot.url>                   <!-- SUT -->
    </properties>
 
 	<dependencies>

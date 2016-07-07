@@ -4,7 +4,8 @@ Test Teardown  Close All Browsers
 
 *** Test Cases ***
 Order iPod Nano
-  Given I select a customer "Rod Johnson"
+  Given I navigate to the order form 
+    and I select a customer "Rod Johnson"
     and iPod Nano is in the catalog
   When I order a IPod Nano
    and I submit the order
@@ -12,14 +13,15 @@ Order iPod Nano
   
 
 *** Keywords ***
-Open Browser and Ordering Form
+I navigate to the order form
     ${remote}=  Get Variable Value  ${REMOTE_URL}  None
     Run Keyword If  '${remote}'=='None'  Open Browser  ${SUT_URL}  ${BROWSER}    None    
     Run Keyword Unless  '${remote}'=='None'  Open Browser  ${SUT_URL}  ${BROWSER}    None  ${REMOTE_URL}    
-    Wait Until Page Contains  Order  30 sec
+    Wait Until Page Contains  Order : View all  30 sec
+    Click Link  Add Order
+    Wait Until Page Contains  Order : Add  30 sec
     
 I select a customer "${customer}"
-  Open Browser and Ordering Form
   Select From List By Label  customerId  ${customer}
   
 I pod Nano is in the catalog

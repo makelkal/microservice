@@ -14,8 +14,7 @@ integration_testing:
   compose_file_path: /src/test/resources
   compose_file_name: docker-compose.yml
 #  test_cmd: mvn -P Robot -D service_url=http://customer:8080 install 
-  test_cmd: true 
-
-service_virtualization: 
-  mari_file_name: catalog.mari
-  mari_file_path: src/test/resources/service-virtualization/VirtualServices  
+  test_cmd: true
+  service_virtualization:
+    mari_file_name: catalog.mari
+    mari_file_path: src/test/resources/service-virtualization/VirtualServices  

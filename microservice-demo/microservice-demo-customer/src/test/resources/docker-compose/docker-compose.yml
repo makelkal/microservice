@@ -3,7 +3,7 @@ services:
   eureka:
     image: ms_eureka
   customer:
-    image: customerTest:Test
+    image: customertest:test
     links:
      - eureka
     expose:

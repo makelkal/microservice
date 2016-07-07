@@ -29,6 +29,7 @@ I pod Nano is in the catalog
   
 I order a IPod Nano
   Click Button  addLine
+  Wait Until Page Contains Element  orderLine0.itemId
   Select From List By Label  orderLine0.itemId  iPod nano
   
 I submit the order

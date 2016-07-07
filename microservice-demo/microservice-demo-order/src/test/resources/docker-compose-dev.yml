@@ -1,0 +1,13 @@
+version: '2'
+services:
+  customer:
+    image: ms_customer
+    expose:
+     - "8080"
+    command: /usr/bin/java -Xmx400m -Xms400m -Djava.security.egd=file:/dev/./urandom -Deureka.client.enabled=false -Dribbon.eureka.enabled=false -jar microservice-demo-customer-0.0.1-SNAPSHOT.jar
+  order:
+    image: ms_order
+    ports:
+    - "9001:8080"
+    command: /usr/bin/java -Xmx400m -Xms400m -Djava.security.egd=file:/dev/./urandom -Deureka.client.enabled=false -Dribbon.eureka.enabled=false -Dcustomer.service.host=customer -Dcustomer.service.port=8080 -Dcatalog.service.host=trustedregistry.andonsandbox.pdcloud.int.tieto.com -Dcatalog.service.port=8001 -jar microservice-demo-order-0.0.1-SNAPSHOT.jar
+ 

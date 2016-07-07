@@ -10,6 +10,13 @@
 
 	<artifactId>microservice-demo-order</artifactId>
 
+    <properties>
+       <robot.browser>chrome</robot.browser>                           <!-- Local default browser -->
+       <robot.tag></robot.tag>
+       <robot.remote_url>None</robot.remote_url>                        <!-- Selenium GRID hub address -->
+       <robot.url>http://localhost:9001/form</robot.url>                   <!-- SUT -->
+   </properties>
+
 	<dependencies>
 
 		<dependency>
@@ -81,7 +88,62 @@
 			<artifactId>bootstrap</artifactId>
 			<version>3.3.6</version>
 		</dependency>
+		
+	    <dependency>
+	        <groupId>com.github.markusbernhardt</groupId>
+	        <artifactId>robotframework-selenium2library-java</artifactId>
+	        <version>1.4.0.8</version>
+	        <scope>test</scope>
+	    </dependency>
 
 	</dependencies>
+	
+	<profiles>
+	
+	   <profile>
+	     <id>robot</id>
+		 <build>
+		    <plugins>
+		      <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-surefire-plugin</artifactId>
+	            <version>2.19.1</version>
+	            <configuration>
+	              <skipTests>true</skipTests>
+	            </configuration>
+		      </plugin>
+		        <plugin>
+		          <groupId>org.robotframework</groupId>
+		          <artifactId>robotframework-maven-plugin</artifactId>
+		          <version>1.4.6</version>
+		          <executions>
+		            <execution>
+		              <goals>
+		                <goal>run</goal>
+		              </goals>
+		            </execution>
+		          </executions>
+		          <configuration>
+		            <testCasesDirectory>${project.basedir}/src/test/resources/robotframework</testCasesDirectory>
+		            <extraPathDirectories>
+		              <extraPathDirectory>${project.basedir}/src/test/resources/libraries</extraPathDirectory>
+		            </extraPathDirectories>
+		            <includes_cli>${robot.tag}</includes_cli>
+		           <variableFiles>
+		           <!--    <variableFile>${project.basedir}/src/main/resources/environment_variables.py</variableFile> -->
+		           </variableFiles>
+		           <variables>
+		               <variable>BROWSER:${robot.browser}</variable>
+		               <variable>REMOTE_URL:${robot.remote_url}</variable>
+		               <variable>SUT_URL:${robot.url}</variable>
+		          </variables>
+		          </configuration>
+		        </plugin>
+		      </plugins>
+		   </build>
+	     
+	   </profile>
+	
+	</profiles>
 
 </project>

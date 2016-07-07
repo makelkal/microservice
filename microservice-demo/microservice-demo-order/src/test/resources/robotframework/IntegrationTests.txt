@@ -1,0 +1,36 @@
+*** Settings ***
+Library  Selenium2Library
+Test Teardown  Close All Browsers
+
+*** Test Cases ***
+Order iPod Nano
+  Given I log in as a customer "Rod Johnson"
+    and iPod Nano is in the catalog
+  When I order a IPod Nano
+   and I submit the order
+  Then my order was successful
+  
+
+*** Keywords ***
+Open Browser and Ordering Form
+    ${remote}=  Get Variable Value  ${REMOTE_URL}  None
+    Run Keyword If  '${remote}'=='None'  Open Browser  ${SUT_URL}  ${BROWSER}    None    
+    Run Keyword Unless  '${remote}'=='None'  Open Browser  ${SUT_URL}  ${BROWSER}    None  ${REMOTE_URL}    
+    Wait Until Page Contains  Order  30 sec
+    
+I log in as a customer "${customer}"
+  Open Browser and Ordering Form
+  Select From List By Label  customerId  ${customer}
+  
+I pod Nano is in the catalog
+  Log  "IPod Nano in the catalog"
+  
+I order a IPod Nano
+  Click Button  addLine
+  Select From List By Label  orderLine0.itemId  iPod nano
+  
+I submit the order
+  Click Button  submit
+
+My order was successful
+  Wait Until Page Contains  Success  30 sec 

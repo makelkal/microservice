@@ -15,7 +15,7 @@ docker_image_build_for_integration_testing:
 integration_testing:
   compose_file_path: /src/test/resources
   compose_file_name: docker-compose.yml
-  test_cmd: mvn -P robot -Drobot.url=http://order:8080 -Drobot.remote_url=http://hub:4444/wd/hub -Drobot.browser=chrome install 
+  test_cmd: mvn -P robot -Drobot.url=http://order:8080/form -Drobot.remote_url=http://hub:4444/wd/hub -Drobot.browser=chrome install 
   service_virtualization:
     mari_file_name: catalog.mari
     mari_file_path: src/test/resources/service-virtualization/VirtualServices  

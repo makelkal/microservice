@@ -17,5 +17,7 @@ integration_testing:
   compose_file_name: docker-compose.yml
   test_cmd: mvn -P robot -Drobot.url=http://order:8080 -Drobot.remote_url=http://hub:4444/wd/hub -Drobot.browser=chrome install 
   service_virtualization:
-    mari_file_name: catalog.mari
     mari_file_path: src/test/resources/service-virtualization/VirtualServices  
+    mari_file_names:
+      - catalog.mari
+    

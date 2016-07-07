@@ -35,8 +35,9 @@ acceptance_testing:
       version: "latest"
 
 #  service_virtualization:
-#    mari_file_name: bookapprest.mari
 #    mari_file_path: src/test/resources/service-virtualization/VirtualServices
+#    mari_file_names:
+#      - bookapprest.mari
   
 production:
   dependency:

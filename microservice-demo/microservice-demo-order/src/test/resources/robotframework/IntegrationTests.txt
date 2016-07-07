@@ -4,7 +4,7 @@ Test Teardown  Close All Browsers
 
 *** Test Cases ***
 Order iPod Nano
-  Given I log in as a customer "Rod Johnson"
+  Given I select a customer "Rod Johnson"
     and iPod Nano is in the catalog
   When I order a IPod Nano
    and I submit the order
@@ -18,7 +18,7 @@ Open Browser and Ordering Form
     Run Keyword Unless  '${remote}'=='None'  Open Browser  ${SUT_URL}  ${BROWSER}    None  ${REMOTE_URL}    
     Wait Until Page Contains  Order  30 sec
     
-I log in as a customer "${customer}"
+I select a customer "${customer}"
   Open Browser and Ordering Form
   Select From List By Label  customerId  ${customer}
   

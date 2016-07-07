@@ -8,14 +8,20 @@ services:
     build: ../microservice-demo/microservice-demo-customer
     links:
      - eureka
-  catalog:
-    build: ../microservice-demo/microservice-demo-catalog
-    links:
-     - eureka
+    ports:
+    - "9002:8080"
+#  catalog:
+#    build: ../microservice-demo/microservice-demo-catalog
+#    links:
+#     - eureka
+#    ports:
+#    - "9000:8080"
   order:
     build: ../microservice-demo/microservice-demo-order
     links:
      - eureka
+    ports:
+    - "9001:8080"
   zuul:
     build: ../microservice-demo/microservice-demo-zuul-server
     links:

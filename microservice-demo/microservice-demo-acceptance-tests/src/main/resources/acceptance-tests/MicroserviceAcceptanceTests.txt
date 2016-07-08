@@ -16,7 +16,7 @@ Microservice-demo Add New Customer and Remove It
 #    Given Andon Engine Is Connected to Go Server
     Given Microservice-demo Customer View is Accessible
     When New Customer is Created
-    #Then I can verify Newly Added Customer and then Remove it
+    Then I can verify Newly Added Customer and then Remove it
 
 Microservice-demo Add an Item to Catalog and Remove It
      [Tags]     REGRESSION

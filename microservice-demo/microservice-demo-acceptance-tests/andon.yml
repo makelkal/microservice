@@ -46,6 +46,8 @@ production:
   custom_cmd:
     - sudo docker tag catalog eekamak/catalog
     - sudo docker push eekamak/catalog
-#    - sudo docker rm -f bookapp_jsf
-#    - sudo docker run -d -p 8081:8080 --name=bookapp_rest bookapp_rest
-#    - sudo docker run -d -p 8082:8080 --name=bookapp_jsf bookapp_jsf
+    - sudo docker tag customer eekamak/customer
+    - sudo docker push eekamak/customer
+    - sudo docker tag order eekamak/order
+    - sudo docker push eekamak/order
+

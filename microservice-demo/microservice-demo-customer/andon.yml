@@ -15,5 +15,12 @@ docker_image_build_for_integration_testing:
 integration_testing:
   compose_file_path: /src/test/resources/docker-compose
   compose_file_name: docker-compose.yml
-  test_cmd: mvn -P Robot -D service_url=http://customer:8080 install 
+  
+  tests:
+    - test_commands:
+      - mvn mvn -P Robot -D service_url=http://customer:8080 install
+      type: parallel
+      test_services:
+        selenium_grid: false
+        service_virtualization: false
   

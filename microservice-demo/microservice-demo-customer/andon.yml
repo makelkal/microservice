@@ -18,7 +18,7 @@ integration_testing:
   
   tests:
     - test_commands:
-      - mvn mvn -P Robot -D service_url=http://customer:8080 install
+      - mvn -P Robot -D service_url=http://customer:8080 install
       type: parallel
       test_services:
         selenium_grid: false

@@ -1,7 +1,7 @@
 version: '2'
 services:
   eureka:
-    image: ms_eureka
+    image: eureka
   customer:
     image: customer:latest
     links:

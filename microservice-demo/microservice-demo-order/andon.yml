@@ -9,16 +9,24 @@ compile_and_unit_tests:
 docker_image_build_for_integration_testing:
   build_path: .
   dockerfile_name: Dockerfile
-  image_name: ms_order
+  image_name: order
   image_tag: latest
 
 integration_testing:
   compose_file_path: /src/test/resources
   compose_file_name: docker-compose.yml
-  #test_cmd:  curl -i -H "Accept:application/json" -H "Content-Type:application/json" -X GET http://vse:8001/catalog/
-  test_cmd: mvn -P robot -Drobot.url=http://order:8080 -Drobot.remote_url=http://hub:4444/wd/hub -Drobot.browser=chrome install 
+  
   service_virtualization:
     mari_file_path: src/test/resources/service-virtualization/VirtualServices  
     mari_file_names:
       - catalog.mari
+      
+  tests:
+    - test_commands:
+      - mvn -P robot -Drobot.url=http://order:8080 -Drobot.remote_url=http://hub:4444/wd/hub -Drobot.browser=chrome install
+      type: parallel
+      test_services:
+        selenium_grid: false
+        service_virtualization: true
+
     

@@ -1,10 +1,10 @@
 version: '2'
 services:
   eureka:
-    image: ms_eureka
+    image: eureka
   customer:
     build: ../../../../.
-    image: ms_customer
+    image: customer
     links:
      - eureka
     ports:

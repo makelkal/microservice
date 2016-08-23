@@ -1,0 +1,36 @@
+version: '2'
+services:
+  eureka:
+    image: eureka
+    expose:
+      - "8761"
+  customer:
+    image: customer
+    links:
+     - eureka
+    ports:
+      - "9001:8080"
+  catalog:
+    image: catalog
+    links:
+     - eureka
+    ports:
+     - "9002:8080"
+  order:
+    image: order
+    links:
+     - eureka
+    ports:
+     - "9003:8080"
+  zuul:
+    image: zuul
+    links:
+     - eureka
+    expose:
+      - "8080"
+#  turbine:
+#    build: turbineserver
+#    links:
+#     - eureka
+#    ports:
+#      - "8989:8989"

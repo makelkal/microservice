@@ -23,12 +23,12 @@ Verify Order
 
 *** Keywords ***
 Open Ordering App
-    [Documentation]  Opens a new browser in selenium grid environment if there is specified
-    ...              the REMOTE_URL variable, that denotes the selenium hub URL.
-    ...              Otherwise opens browser in the user's desktop.  
-    ${remote}=  Get Variable Value  ${REMOTE_URL}  None
-    Run Keyword If  '${remote}'=='None'  Open Browser  ${SUT_URL}  ${BROWSER}    None    
-    Run Keyword Unless  '${remote}'=='None'  Open Browser  ${SUT_URL}  ${BROWSER}    None  ${REMOTE_URL}    
+	[Documentation]  Opens a new browser in selenium grid environment if there is specified
+	...              the REMOTE_URL variable, that denotes the selenium hub URL.
+	...              Otherwise opens browser in the user's desktop.  
+	${remote}=  Get Variable Value  ${REMOTE_URL}  None
+	Run Keyword If  '${remote}'=='None'  Open Browser  ${SUT_URL}  ${BROWSER}    None    
+	Run Keyword Unless  '${remote}'=='None'  Open Browser  ${SUT_URL}  ${BROWSER}    None  ${REMOTE_URL}    
 
 I navigate to the order form
     Open Ordering App

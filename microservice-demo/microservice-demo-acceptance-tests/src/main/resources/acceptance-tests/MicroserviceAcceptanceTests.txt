@@ -44,9 +44,9 @@ Open Browser And Navigate to Add Order Page
   ${remote}=  Get Variable Value  ${REMOTE_URL}  None
   Run Keyword If  "${remote}"=="None"   Open Browser   ${ORDER_URL}  ${BROWSER}  None      
   Run Keyword Unless  "${remote}"=="None"  Open Browser  ${ORDER_URL}  ${BROWSER}  None  ${REMOTE_URL}
+  Reload Page
   Wait Until Page Contains  Order : View all
   Click Link  Add Order
-  Reload Page
   Wait Until Page Contains   Order : Add
 
 Product "${name}" is in the catalog

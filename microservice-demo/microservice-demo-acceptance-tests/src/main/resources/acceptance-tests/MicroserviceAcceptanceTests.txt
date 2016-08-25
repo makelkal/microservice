@@ -46,6 +46,8 @@ Open Browser And Navigate to Add Order Page
   Run Keyword Unless  "${remote}"=="None"  Open Browser  ${ORDER_URL}  ${BROWSER}  None  ${REMOTE_URL}
   Sleep  10s
   Reload Page
+  Sleep  5s
+  Reload Page
   Wait Until Page Contains  Order : View all
   Click Link  Add Order
   Wait Until Page Contains   Order : Add

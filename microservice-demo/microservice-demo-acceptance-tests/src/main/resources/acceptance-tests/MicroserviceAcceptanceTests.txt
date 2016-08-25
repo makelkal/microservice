@@ -48,7 +48,7 @@ Open Browser And Navigate to Add Order Page
   Run Keyword If  "${remote}"=="None"   Open Browser   ${ORDER_URL}  ${BROWSER}  None      
   Run Keyword Unless  "${remote}"=="None"  Open Browser  ${ORDER_URL}  ${BROWSER}  None  ${REMOTE_URL}
   :FOR  ${INDEX}  IN RANGE  1  10 
-  \  ${passed}=  Run Keyword And Return Status  Wait Until Page Contains  Order : View all  3s
+  \  ${passed}=  Run Keyword And Return Status  Wait Until Page Contains  Order : View all  5s
   \  Run Keyword Unless  ${passed}  Reload Page
   \  RUn Keyword If  ${passed}  Exit For Loop
   Click Link  Add Order

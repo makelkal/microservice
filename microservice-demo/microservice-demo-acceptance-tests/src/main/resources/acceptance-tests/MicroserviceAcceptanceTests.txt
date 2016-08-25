@@ -8,7 +8,7 @@ Library     String
 Test Setup  Open Browser And Navigate to Add Order Page 
 Suite Setup  Initialize Session
 Suite Teardown  Delete All Sessions
-#Test Teardown  Close Browser
+Test Teardown  Close Browser
 
 *** Variables ***
 # Execution specific

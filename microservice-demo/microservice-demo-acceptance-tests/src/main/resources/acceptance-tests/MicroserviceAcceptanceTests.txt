@@ -8,7 +8,7 @@ Library     String
 Test Setup  Open Browser And Navigate to Add Order Page 
 Suite Setup  Initialize Session
 Suite Teardown  Delete All Sessions
-#Test Teardown  Close Browser
+Test Teardown  Close Browser
 
 *** Variables ***
 # Execution specific
@@ -51,6 +51,7 @@ Open Browser And Navigate to Add Order Page
   Click Link  Add Order
   Wait Until Page Contains   Order : Add
   Reload Page
+  Sleep  2s
 
 Product "${name}" is in the catalog
   Log  "not yet implemented - do a rest api call here!"
@@ -92,5 +93,5 @@ I can verify my order
   Go To  ${ORDER_URL}
   Click Link  xpath=//table/tbody/tr[last()]/td/a
   ${name}=  Get Text  xpath=//div[text()='Customer']/following-sibling::div
-  Should Be Equal  ${NAME}  ${name}
+  Should Be Equal  ${FIRSTNAME} ${NAME}  ${name}
   

@@ -16,7 +16,8 @@
        <robot.tag></robot.tag>
        <robot.remote_url>None</robot.remote_url>                        <!-- Selenium GRID hub address -->
        <robot.url>http://localhost:8080/order/</robot.url>              <!-- SUT -->
-       <robot.rest_url>http://localhost:9001</robot.rest_url>
+       <robot.customer_rest_url>http://localhost:9001</robot.customer_rest_url>
+       <robot.catalog_rest_url>http://localhost:9002</robot.catalog_rest_url>
    </properties>
 
 
@@ -30,56 +31,64 @@
 </dependency>
   </dependencies>
   
-  
-  <build>
-    <plugins>
-      <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.1</version>
-          <configuration>
-              <encoding>UTF-8</encoding>
-              <source>1.8</source>
-              <target>1.8</target>
-          </configuration>
-        </plugin>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.19.1</version>
-            <configuration>
-              <skipTests>true</skipTests>
-            </configuration>
-      </plugin>
-        <plugin>
-          <groupId>org.robotframework</groupId>
-          <artifactId>robotframework-maven-plugin</artifactId>
-          <version>1.4.6</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>run</goal>
-              </goals>
-            </execution>
-          </executions>
-          <configuration>
-            <testCasesDirectory>${project.basedir}/src/main/resources</testCasesDirectory>
-            <extraPathDirectories>
-              <extraPathDirectory>${project.basedir}/src/test/resources/libraries</extraPathDirectory>
-            </extraPathDirectories>
-            <includes_cli>${robot.tag}</includes_cli>
-           <variableFiles>
-           <!--    <variableFile>${project.basedir}/src/main/resources/environment_variables.py</variableFile> -->
-           </variableFiles>
-           <variables>
-               <variable>BROWSER:${robot.browser}</variable>-->
-               <variable>REMOTE_URL:${robot.remote_url}</variable>
-               <variable>ORDER_URL:${robot.url}</variable>
-               <variable>REST_SERVICE_URL:${robot.rest_url}</variable>
-          </variables>
-          </configuration>
-        </plugin>
-      </plugins>
-   </build>
+  <profiles>
+    <profile>
+      <id>robot</id>
+    
+		  <build>
+		    <plugins>
+		      <plugin>
+		          <groupId>org.apache.maven.plugins</groupId>
+		          <artifactId>maven-compiler-plugin</artifactId>
+		          <version>3.1</version>
+		          <configuration>
+		              <encoding>UTF-8</encoding>
+		              <source>1.8</source>
+		              <target>1.8</target>
+		          </configuration>
+		        </plugin>
+		        <plugin>
+		            <groupId>org.apache.maven.plugins</groupId>
+		            <artifactId>maven-surefire-plugin</artifactId>
+		            <version>2.19.1</version>
+		            <configuration>
+		              <skipTests>true</skipTests>
+		            </configuration>
+		      </plugin>
+		        <plugin>
+		          <groupId>org.robotframework</groupId>
+		          <artifactId>robotframework-maven-plugin</artifactId>
+		          <version>1.4.6</version>
+		          <executions>
+		            <execution>
+		              <goals>
+		                <goal>run</goal>
+		              </goals>
+		            </execution>
+		          </executions>
+		          <configuration>
+		            <testCasesDirectory>${project.basedir}/src/main/resources</testCasesDirectory>
+		            <extraPathDirectories>
+		              <extraPathDirectory>${project.basedir}/src/test/resources/libraries</extraPathDirectory>
+		            </extraPathDirectories>
+		            <includes_cli>${robot.tag}</includes_cli>
+		           <variableFiles>
+		           <!--    <variableFile>${project.basedir}/src/main/resources/environment_variables.py</variableFile> -->
+		           </variableFiles>
+		           <variables>
+		               <variable>BROWSER:${robot.browser}</variable>-->
+		               <variable>REMOTE_URL:${robot.remote_url}</variable>
+		               <variable>ORDER_URL:${robot.url}</variable>
+		               <variable>CUSTOMER_SERVICE_URL:${robot.customer_rest_url}</variable>
+		               <variable>CATALOG_SERVICE_URL:${robot.catalog_rest_url}</variable>
+		          </variables>
+		          </configuration>
+		        </plugin>
+		      </plugins>
+		   </build>
+	  
+      </profile>
+
+  </profiles>
 
 </project>

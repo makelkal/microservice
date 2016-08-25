@@ -8,21 +8,22 @@ Library     String
 Test Setup  Open Browser And Navigate to Add Order Page 
 Suite Setup  Initialize Session
 Suite Teardown  Delete All Sessions
-Test Teardown  Close Browser
+#Test Teardown  Close Browser
 
 *** Variables ***
 # Execution specific
 ${BROWSER}                        chrome
 ${REMOTE_URL}                     ${EMPTY}
 ${ORDER_URL}                      
-${REST_SERVICE_URL}
+${CUSTOMER_SERVICE_URL}
+${CATALOG_SERVICE_URL}
 
 *** Test Cases ***
 Order a product from a catalog
-  Given product "Apple TV" is in the catalog
+  Given product "Torspo" is added to the catalog
     and customer "Teemu Selanne" is added
-  When I order a product "Apple TV"
-   and I select a customer "Teemu Selanne"
+  When I order product "Torspo"
+   and I select customer "Teemu Selanne"
    And I submit the order
   Then I can verify my order
 
@@ -38,7 +39,8 @@ Initialize Session
   Set Log Level         TRACE
   ${headers}=  Create Dictionary  Content-type=application/json  Accept=*/*  Accept-language=en-US,en;fi  Cache-control=no-cache
   Set Suite Variable  ${HEADERS}  ${headers}
-  Create Session  appsrv  ${REST_SERVICE_URL}  headers=${headers}  
+  Create Session  custsrv  ${CUSTOMER_SERVICE_URL}  headers=${headers}  
+  Create Session  catalogsrv  ${CATALOG_SERVICE_URL}  headers=${headers}  
 
 Open Browser And Navigate to Add Order Page
   [Documentation]  
@@ -54,14 +56,18 @@ Open Browser And Navigate to Add Order Page
   Sleep  2s
   Reload Page
 
-Product "${name}" is in the catalog
-  Log  "not yet implemented - do a rest api call here!"
+Product "${name}" is added to the catalog
+  Get JSON Template  catalog.json
+  Set Test Variable  ${CATALOG_ITEM}  ${name}
+  Set Test Variable  ${CATALOG_PRICE}  120
+  ${data}=  Replace Variables  ${TEMPLATE}
+  Post JSON data  catalogsrv  /catalog  ${data} 
 
 Customer "${name}" is added
   Get JSON Template  customer.json
   Run Keyword If  "${name}"=="Teemu Selanne"  Add User Teemu Selanne  
   ${data}=  Replace Variables  ${TEMPLATE}
-  Post JSON data  /customer  ${data}  
+  Post JSON data  custsrv  /customer  ${data}  
 
 Add User Teemu Selanne
   Set Test Variable  ${NAME}  Selanne
@@ -70,20 +76,20 @@ Add User Teemu Selanne
   Set Test Variable  ${STREET}  Madre Selva LN
   Set Test Variable  ${CITY}  San Diego
 
-Post JSON data  [Arguments]  ${uri}  ${data}
+Post JSON data  [Arguments]  ${session}  ${uri}  ${data}
   [Documentation]  Posts Customer data through REST API.
   Log  ${data}
-  ${resp}=  Post Request  appsrv  ${uri}  data=${data}
+  ${resp}=  Post Request  ${session}  ${uri}  data=${data}
   Log  ${resp.text}
   Should Be Equal As Strings  ${resp.status_code}  201
   ${actual}=  To Json  ${resp.content}
   Log  ${actual}
   [Return]  ${actual} 
   
-I select a customer "${name}"
+I select customer "${name}"
   Select From List  customerId  ${name}
 
-I order a product "${product}"
+I order product "${product}"
   Click Button  addLine
   Input Text  orderLine0.count  1
   Select From List  orderLine0.itemId  ${product}

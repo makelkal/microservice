@@ -11,8 +11,8 @@ acceptance_testing:
   
   tests:
     - test_commands:
-      - mvn -P robot -D variable.robot=SUT_HOST:zuul,SUT_PORT:8080,BROWSER=chrome org.robotframework:robotframework-maven-plugin:run
-      - mvn -P robot -D variable.robot=SUT_HOST:zuul,SUT_PORT:8080,BROWSER=firefox org.robotframework:robotframework-maven-plugin:run
+      - mvn -Drobot.browser=chrome -Drobot.remote_url=http://hub:4444/wd/hub -Drobot.url=http://order:8080/order -Drobot.rest_url=http://customer:8080 clean install
+#      - mvn -P robot -D variable.robot=SUT_HOST:zuul,SUT_PORT:8080,BROWSER=firefox org.robotframework:robotframework-maven-plugin:run
       type: parallel
       test_services:
         selenium_grid: true

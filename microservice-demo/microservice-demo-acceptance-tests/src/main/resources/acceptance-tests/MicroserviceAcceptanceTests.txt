@@ -1,140 +1,93 @@
 *** Settings ***
-Library                 Collections
-Library                 String
-Library                 Selenium2Library    10.0  1.0      #timeout, implicit_wait
-Library                 OperatingSystem
-Resource                variables.txt
-Suite Setup             Setup Connections and Environment
-#Suite Teardown          Delete Connections and stop Environment
-#Test Teardown           General Test Teardown
+Library     Selenium2Library    10.0  1.0      #timeout, implicit_wait
+Library     RequestsLibrary
+Library     OperatingSystem
+Library     Collections
+Library     String
 
+Test Setup  Open Browser And Navigate to Add Order Page 
+Suite Setup  Initialize Session
+Suite Teardown  Delete All Sessions
+Test Teardown  Close Browser
+
+*** Variables ***
+# Execution specific
+${BROWSER}                        chrome
+${REMOTE_URL}                     ${EMPTY}
+${ORDER_URL}                      
+${REST_SERVICE_URL}
 
 *** Test Cases ***
-Microservice-demo Add New Customer and Remove It
-    [Documentation]
-    [Tags]  REGRESSION
-#    Given Andon Engine Is Connected to Go Server
-    Given Microservice-demo Customer View is Accessible
-    When New Customer is Created
-    Then I can verify Newly Added Customer and then Remove it
-
-Microservice-demo Add an Item to Catalog and Remove It
-     [Tags]     REGRESSION
-     #    Given Andon Engine Is Connected to Go Server
-    Given Microservice-demo Catalog List View is Accessible
-    Given Microservice-demo Catalog Search View is Accessible
-    #Then I Can Add a New Item "Sony Walkman TPS-L2" Costing "300" in Catalog and Remove It
-
-Microservice-demo Add an Order and Remove It
-    [Tags]     REGRESSION
-    #    Given Andon Engine Is Connected to Go Server
-    Given Microservice-demo Order View is Accessible
-    #Then I Can Add a New Order  "New Order" and Remove It
+Order a product from a catalog
+  Given product "Apple TV" is in the catalog
+    and customer "Teemu Selänne" is added
+  When I select a customer "Teemu Selänne"
+   and I order a product "Apple TV"
+  Then I can verify my order
 
 *** Keywords ***
-Microservice-demo Customer View is Accessible
-	Navigate Customer View
+Get JSON Template  [Arguments]  ${form}
+  [Documentation]  Reads the json template. Template name is given as an argument. 
+  ...              Template should reside at the same directory as the test case. 
+  ${json}=  Get File  ${CURDIR}${/}${form}  encoding=utf-8
+  Set Test Variable  ${TEMPLATE}  ${json}
 
-Microservice-demo Catalog List View is Accessible
-        Run Keyword And Ignore Error  Click Link  Home
-        Wait Until Element Is Visible       ${LIST_ITEMS_CATALOG_LINK}     timeout=20 seconds
-        Click Element      ${LIST_ITEMS_CATALOG_LINK} 
-        Wait Until Page Contains      Item : View all       timeout=20 seconds
-        Click Link          Home
-        Wait Until Page Contains        Order Processing        timeout=20 seconds
+Initialize Session
+  [Documentation]  Creates context for REST API calls. 
+  Set Log Level         TRACE
+  ${headers}=  Create Dictionary  Content-type=application/json  Accept=*/*  Accept-language=en-US,en;fi  Cache-control=no-cache
+  Set Suite Variable  ${HEADERS}  ${headers}
+  Create Session  appsrv  ${REST_SERVICE_URL}  headers=${headers}  
 
-Microservice-demo Catalog Search View is Accessible
-        Run Keyword And Ignore Error  Click Link  Home
-        Wait Until Element Is Visible       ${SEARCH_ITEMS_CATALOG_LINK}     timeout=20 seconds
-        Click Element      ${SEARCH_ITEMS_CATALOG_LINK} 
-        Wait Until Page Contains      Search for Item by Name       timeout=20 seconds
-        Go Back
-        Wait Until Page Contains        Order Processing        timeout=20 seconds
+Open Browser And Navigate to Add Order Page
+  [Documentation]  
+  ${remote}=  Get Variable Value  ${REMOTE_URL}  None
+  Run Keyword If  "${remote}"=="None"   Open Browser   ${ORDER_URL}  ${BROWSER}  None      
+  Run Keyword Unless  "${remote}"=="None"  Open Browser  ${ORDER_URL}  ${BROWSER}  None  ${REMOTE_URL}
+  Wait Until Page Contains  Order : View all
+  Click Link  Add Order
+  Reload Page
+  Wait Until Page Contains   Order : Add
 
-Microservice-demo Order View is Accessible
-        Run Keyword And Ignore Error  Click Link  Home
-        Click Link         Order
-        Wait Until Page Contains        Order : View all        timeout=20 seconds
-        Click Link          Home
-        Wait Until Page Contains        Order Processing        timeout=20 seconds
-        
-I Can Add a New Item "${item}" Costing "${price}" in Catalog and Remove It
-        Add Item "${item}" Costing "${price}" in Catalog
-        Delete Item "${item}" from Catalog
-        Verify Item "${item}" Does Not Exist
+Product "${name}" is in the catalog
+  Log  "not yet implemented - do a rest api call here!"
 
-Add Item "${item}" Costing "${price}" in Catalog
-        Wait Until Element Is Visible       ${LIST_ITEMS_CATALOG_LINK}     timeout=20 seconds
-        Click Element      ${LIST_ITEMS_CATALOG_LINK} 
-        Wait Until Page Contains      Item : View all       timeout=20 seconds
-        Wait Until Page Contains           Add Item     timeout=20 seconds
-        Click Link     Add Item
-        Wait Until Element Is Visible      id=name    timeout=20 seconds
-        Input Text      id=name    ${item}  
-        Input Text      id=price   ${price}   
-        Click Button      Submit
-        Wait Until Page Contains       Success      timeout=20 seconds     
-        Click Link          Home
+Customer "${name}" is added
+  Get JSON Template  customer.json
+  Run Keyword If  "${name}"=="Teemu Selänne"  Add User Teemu Selanne  
+  ${data}=  Replace Variables  ${TEMPLATE}
+  Post JSON data  /customer  ${data}  
 
-Delete Item "${item}" from Catalog
-        Wait Until Element Is Visible       ${SEARCH_ITEMS_CATALOG_LINK}     timeout=20 seconds
-        Click Element      ${SEARCH_ITEMS_CATALOG_LINK} 
-        Wait Until Element Is Visible      ${SEARCH_ITEMS_FIELD}       timeout=20 seconds
-        Input Text      ${SEARCH_ITEMS_FIELD}      ${item}
-        Click Button        Submit
-        Wait Until Page Contains        ${item}        timeout=20 seconds  
-        #Click Button       delete
-        #Wait Until Page Contains       Success        timeout=20 seconds
-        #Click Link          Home
+Add User Teemu Selanne
+  Set Test Variable  ${NAME}  Selänne
+  Set Test Variable  ${FIRSTNAME}  Teemu
+  Set Test Variable  ${EMAIL}  teemu.selane@gmail.com
+  Set Test Variable  ${STREET}  Madre Selva LN
+  Set Test Variable  ${CITY}  San Diego
 
-Verify Item "${item}" Does Not Exist
-        Wait Until Element Is Visible       ${SEARCH_ITEMS_CATALOG_LINK}     timeout=20 seconds
-        Click Element      ${SEARCH_ITEMS_CATALOG_LINK} 
-        Wait Until Element Is Visible      ${SEARCH_ITEMS_FIELD}       timeout=20 seconds
-        Input Text      ${SEARCH_ITEMS_FIELD}      ${item}
-        Click Button        Submit
-        Wait Until Page Contains     No items       timeout=20 seconds  
-        Click Link          Home
+Post JSON data  [Arguments]  ${uri}  ${data}
+  [Documentation]  Posts Customer data through REST API.
+  Log  ${data}
+  ${resp}=  Post Request  appsrv  ${uri}  data=${data}
+  Log  ${resp.text}
+  Should Be Equal As Strings  ${resp.status_code}  201
+  ${actual}=  To Json  ${resp.content}
+  Log  ${actual}
+  [Return]  ${actual} 
+  
+I select a customer "${name}"
+  Select From List  customerId  ${name}
 
-I Can Add a New Order "${order}" and Remove It
-        Wait Until Page Contains          Order      timeout=20 seconds
-        #TBD
-        
-Navigate Customer View
-	Run Keyword And Ignore Error  Click Link  Home
-	Wait Until Keyword Succeeds  ${MAX_WAIT_TIME}  20s     Click Link  Customer
-	Go Back
-	Wait Until Keyword Succeeds  ${MAX_WAIT_TIME}  20s     Click Link  Customer
-	Wait Until Keyword Succeeds  ${MAX_WAIT_TIME}  20s     Page Should Contain  Customer : View all
+I order a product "${product}"
+  Click Button  addLine
+  Input Text  orderLine0.count  1
+  Select From List  orderLine0.itemId  ${product}
+  Click Button  submit
+  Wait Until Page Contains  Success
 
-New Customer is Created
-	Click Link  Add Customer
-	Fill Values to Customer Form
-	Run Keyword If    ${DEBUG LEVEL}==1    Capture Page Screenshot    
-	Click Button  Submit
-	Page Should Contain  Success
-
-Fill Values to Customer Form
-	Input Text  name  Robot
-	Input Text  firstname  Framework
-	Input Text  email  rorbot.framework@tieto.com
-	Input Text  street  Hvt
-	Input Text  city  Tampere
-	
-I can verify Newly Added Customer and then Remove it
-	Navigate Customer View
-	Run Keyword If    ${DEBUG LEVEL}==1    Capture Page Screenshot    
-	Page Should Contain  Robot
-	Page Should Contain  Framework
-	Click Button  //td[text()="Robot"]/..//input[@value="delete" and @type="submit"]
-	Page Should Contain  Success
-
-Microservice-demo Should Be Accessible
-    Wait Until Keyword Succeeds  ${MAX_WAIT_TIME}  10s     Microservice-demo Front Page Should Be loaded
-
-Microservice-demo Front Page Should Be loaded
-    Open Browser  ${SUT}  ${BROWSER}  ${EMPTY}  ${SELENIUM_GRID_URL}
-    Wait Until Page Contains  Order Processing
-
-Setup Connections and Environment
-	Microservice-demo Should Be Accessible
+I can verify my order
+  Go To  ${ORDER_URL}
+  Click Link  xpath=//table/tbody/tr[last()]/td/a
+  ${name}=  Get Text  xpath=//div[text()='Customer']/following-sibling::div
+  Should Be Equal  ${NAME}  ${name}
+  

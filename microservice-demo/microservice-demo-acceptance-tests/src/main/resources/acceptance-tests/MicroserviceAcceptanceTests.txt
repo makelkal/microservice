@@ -8,7 +8,7 @@ Library     String
 Test Setup  Open Browser And Navigate to Add Order Page 
 Suite Setup  Initialize Session
 Suite Teardown  Delete All Sessions
-Test Teardown  Close Browser
+#Test Teardown  Close Browser
 
 *** Variables ***
 # Execution specific
@@ -21,8 +21,9 @@ ${REST_SERVICE_URL}
 Order a product from a catalog
   Given product "Apple TV" is in the catalog
     and customer "Teemu Selanne" is added
-  When I select a customer "Teemu Selanne"
-   and I order a product "Apple TV"
+  When I order a product "Apple TV"
+   and I select a customer "Teemu Selanne"
+   And I submit the order
   Then I can verify my order
 
 *** Keywords ***
@@ -50,8 +51,8 @@ Open Browser And Navigate to Add Order Page
   \  RUn Keyword If  ${passed}  Exit For Loop
   Click Link  Add Order
   Wait Until Page Contains   Order : Add
-  Reload Page
   Sleep  2s
+  Reload Page
 
 Product "${name}" is in the catalog
   Log  "not yet implemented - do a rest api call here!"
@@ -86,6 +87,8 @@ I order a product "${product}"
   Click Button  addLine
   Input Text  orderLine0.count  1
   Select From List  orderLine0.itemId  ${product}
+
+I submit the order
   Click Button  submit
   Wait Until Page Contains  Success
 
@@ -93,5 +96,5 @@ I can verify my order
   Go To  ${ORDER_URL}
   Click Link  xpath=//table/tbody/tr[last()]/td/a
   ${name}=  Get Text  xpath=//div[text()='Customer']/following-sibling::div
-  Should Be Equal  ${FIRSTNAME} ${NAME}  ${name}
+  Should Be Equal  ${NAME}  ${name}
   

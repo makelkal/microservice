@@ -8,7 +8,7 @@ Library     String
 Test Setup  Open Browser And Navigate to Add Order Page 
 Suite Setup  Initialize Session
 Suite Teardown  Delete All Sessions
-Test Teardown  Close Browser
+#Test Teardown  Close Browser
 
 *** Variables ***
 # Execution specific
@@ -20,8 +20,8 @@ ${REST_SERVICE_URL}
 *** Test Cases ***
 Order a product from a catalog
   Given product "Apple TV" is in the catalog
-    and customer "Teemu Selänne" is added
-  When I select a customer "Teemu Selänne"
+    and customer "Teemu Selanne" is added
+  When I select a customer "Teemu Selanne"
    and I order a product "Apple TV"
   Then I can verify my order
 
@@ -50,20 +50,21 @@ Open Browser And Navigate to Add Order Page
   \  RUn Keyword If  ${passed}  Exit For Loop
   Click Link  Add Order
   Wait Until Page Contains   Order : Add
+  Reload Page
 
 Product "${name}" is in the catalog
   Log  "not yet implemented - do a rest api call here!"
 
 Customer "${name}" is added
   Get JSON Template  customer.json
-  Run Keyword If  "${name}"=="Teemu Selänne"  Add User Teemu Selanne  
+  Run Keyword If  "${name}"=="Teemu Selanne"  Add User Teemu Selanne  
   ${data}=  Replace Variables  ${TEMPLATE}
   Post JSON data  /customer  ${data}  
 
 Add User Teemu Selanne
-  Set Test Variable  ${NAME}  Selänne
+  Set Test Variable  ${NAME}  Selanne
   Set Test Variable  ${FIRSTNAME}  Teemu
-  Set Test Variable  ${EMAIL}  teemu.selane@gmail.com
+  Set Test Variable  ${EMAIL}  teemu.selanne@gmail.com
   Set Test Variable  ${STREET}  Madre Selva LN
   Set Test Variable  ${CITY}  San Diego
 

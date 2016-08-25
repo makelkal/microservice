@@ -6,14 +6,20 @@ services:
       - "8761"
   customer:
     image: customer
+    expose:
+      - "8080"
     links:
      - eureka
   catalog:
     image: catalog
+    expose:
+      - "8080"
     links:
      - eureka
   order:
     image: order
+    expose:
+      - "8080"
     links:
      - eureka
   zuul:

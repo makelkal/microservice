@@ -103,4 +103,6 @@ I can verify my order
   Click Link  xpath=//table/tbody/tr[last()]/td/a
   ${name}=  Get Text  xpath=//div[text()='Customer']/following-sibling::div
   Should Be Equal  ${NAME}  ${name}
+  ${price}=  Get Text  xpath=//div[text()='Total price']/following-sibling::div
+  Should Be Equal  ${CATALOG_PRICE}  120
   

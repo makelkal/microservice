@@ -1,61 +1,36 @@
 version: '2'
 services:
   eureka:
-    build: ../microservice-demo/microservice-demo-eureka-server
-    image: eureka:latest
-    ports:
-      - "8761:8761"
+    image: eekamak/eureka
+    expose:
+      - "8761"
   customer:
-    build: ../microservice-demo/microservice-demo-customer
-    image: customer:latest
+    image: eekamak/customer
     links:
      - eureka
-    ports:
-    - "9002:8080"
+    expose:
+    - "8080"
   catalog:
-    build: ../microservice-demo/microservice-demo-catalog
-    image: catalog:latest
+    image: eekamak/catalog
     links:
      - eureka
-    ports:
-    - "9000:8080"
+    expose:
+    - "8080"
   order:
-    build: ../microservice-demo/microservice-demo-order
-    image: order:latest
+    image: eekamak/order
     links:
      - eureka
-    ports:
-    - "9001:8080"
+    expose:
+    - "8080"
   zuul:
-    build: ../microservice-demo/microservice-demo-zuul-server
-    image: zuul:latest
+    image: eekamak/zuul
     links:
      - eureka
     ports:
       - "8080:8080"
-  turbine:
-    build: ../microservice-demo/microservice-demo-turbine-server
-    image: turbine:latest
-    links:
-     - eureka
-    ports:
-      - "8989:8989"
-
-#  hub:
-#    image: selenium/hub:latest
-#    ports:
-#      - "4444:4444"
+#  turbine:
+#    image: turbine:latest
+#    links:
+#     - eureka
 #    expose:
-#      - "4444"
-#  firefox:
-#    image: selenium/node-firefox:latest
-#    expose:
-#      - "5555"
-#    environment:
-#     - HUB_PORT_4444_TCP_ADDR=hub
-#  chrome:
-#    image: selenium/node-chrome:latest
-#    expose:
-#      - "5555"
-#    environment:
-#     - HUB_PORT_4444_TCP_ADDR=hub
+#      - "8989"

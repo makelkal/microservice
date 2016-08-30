@@ -28,9 +28,9 @@ services:
      - eureka
     ports:
       - "8080:8080"
-#  turbine:
-#    image: turbine:latest
-#    links:
-#     - eureka
-#    expose:
-#      - "8989"
+  turbine:
+    image: eekamak/turbine
+    links:
+     - eureka
+    expose:
+      - "8989"

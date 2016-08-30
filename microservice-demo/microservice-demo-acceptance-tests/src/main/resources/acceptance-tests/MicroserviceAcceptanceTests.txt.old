@@ -104,5 +104,5 @@ I can verify my order
   ${name}=  Get Text  xpath=//div[text()='Customer']/following-sibling::div
   Should Be Equal  ${NAME}  ${name}
   ${price}=  Get Text  xpath=//div[text()='Total price']/following-sibling::div
-  Should Be Equal  ${CATALOG_PRICE}  120
+  Should Be Equal  ${CATALOG_PRICE}  ${price}
   

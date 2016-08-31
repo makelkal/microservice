@@ -19,13 +19,20 @@ ${CUSTOMER_SERVICE_URL}
 ${CATALOG_SERVICE_URL}
 
 *** Test Cases ***
+#OPTION 1:
 Order a product from a catalog
   Given product "Torspo" is added to the catalog
-    and customer "Teemu Selanne" is added
+    And customer "Teemu Selanne" is added
   When I order product "Torspo"
-   and I select customer "Teemu Selanne"
-   And I submit the order
+    And I select customer "Teemu Selanne"
+    And I submit the order
   Then I can verify my order
+
+Delete an existing order
+  Given Product "Koho" is ordered by "Jari Kurri"
+  When I have an order "Koho" for "Jari Kurri"
+    And I press delete button for "Jari Kurri" order
+  Then I can verify my order for "Jari Kurri" is deleted
 
 *** Keywords ***
 Get JSON Template  [Arguments]  ${form}
@@ -59,22 +66,32 @@ Open Browser And Navigate to Add Order Page
 Product "${name}" is added to the catalog
   Get JSON Template  catalog.json
   Set Test Variable  ${CATALOG_ITEM}  ${name}
-  Set Test Variable  ${CATALOG_PRICE}  120
+  Set Test Variable  ${CATALOG_PRICE}  120.0
   ${data}=  Replace Variables  ${TEMPLATE}
-  Post JSON data  catalogsrv  /catalog  ${data}
+  ${result}=  Post JSON data  catalogsrv  /catalog  ${data}
+  Set Test Variable  ${CATALOG_ID}  ${result['id']}
+  Log  ${CATALOG_ID}
 
 Customer "${name}" is added
-  Get JSON Template  customer.json
-  Run Keyword If  "${name}"=="Teemu Selanne"  Add User Teemu Selanne
-  ${data}=  Replace Variables  ${TEMPLATE}
-  Post JSON data  custsrv  /customer  ${data}
+    Get JSON Template  customer.json
+    Run Keyword If  "${name}"=="Teemu Selanne"  Add User Teemu Selanne
+    Run Keyword If  "${name}"=="Jari Kurri"  Add User Jari Kurri
+    ${data}=  Replace Variables  ${TEMPLATE}
+    Post JSON data  custsrv  /customer  ${data}
 
 Add User Teemu Selanne
-  Set Test Variable  ${NAME}  Selanne
-  Set Test Variable  ${FIRSTNAME}  Teemu
-  Set Test Variable  ${EMAIL}  teemu.selanne@gmail.com
-  Set Test Variable  ${STREET}  Madre Selva LN
-  Set Test Variable  ${CITY}  San Diego
+    Set Test Variable  ${NAME}  Selanne
+    Set Test Variable  ${FIRSTNAME}  Teemu
+    Set Test Variable  ${EMAIL}  teemu.selanne@gmail.com
+    Set Test Variable  ${STREET}  Madre Selva LN
+    Set Test Variable  ${CITY}  San Diego
+
+Add User Jari Kurri
+  Set Test Variable  ${NAME}  Kurri
+  Set Test Variable  ${FIRSTNAME}  Jari
+  Set Test Variable  ${EMAIL}  jari.kurri@nhl.com
+  Set Test Variable  ${STREET}  East Street 1
+  Set Test Variable  ${CITY}  New York
 
 Post JSON data  [Arguments]  ${session}  ${uri}  ${data}
   [Documentation]  Posts Customer data through REST API.
@@ -105,3 +122,39 @@ I can verify my order
   Should Be Equal  ${NAME}  ${name}
   ${price}=  Get Text  xpath=//div[text()='Total price']/following-sibling::div
   Should Be Equal  ${CATALOG_PRICE}  ${price}
+
+Product "${catalog_item}" is ordered by "${customer}"
+  Given product "${catalog_item}" is added to the catalog
+    and customer "${customer}" is added
+  When I order product "${catalog_item}"
+   And I select customer "${customer}"
+   And I submit the order
+  Then I can verify my order
+
+I have an order "${catalog_item}" for "${customer}"
+  Go To  ${ORDER_URL}
+  Wait Until Page Contains  Add Order
+  Click Link  xpath=//table/tbody/tr[last()]/td/a
+  Wait Until Page Contains  ${customer}
+  Wait Until Page Contains  ${catalog_item}
+
+I press delete button for "${customer}" order
+  Go To  ${ORDER_URL}
+  Wait Until Page Contains  Add Order
+  Page Should contain  ${customer}
+  Click Element  xpath=//table/tbody/tr[last()]//td[contains(text(),'${customer}')]/..//input[contains(@class,'btn-link')]
+
+I can verify my order for "${customer}" is deleted
+  Go To  ${ORDER_URL}
+  Wait Until Page Contains  Add Order
+  Page Should not contain  ${customer}
+
+I Remove The Catalog Through Service API #not working since no delete implementation in microservice demo
+    ${resp}=  Delete Request  catalogsrv  ${CATALOG_SERVICE_URL}/catalog/${CATALOG_ID}
+    Should Be Equal As Strings  ${resp.status_code}  204
+
+
+
+
+
+

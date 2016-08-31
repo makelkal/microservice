@@ -19,7 +19,6 @@ ${CUSTOMER_SERVICE_URL}
 ${CATALOG_SERVICE_URL}
 
 *** Test Cases ***
-#OPTION 1:
 Order a product from a catalog
   Given product "Torspo" is added to the catalog
     And customer "Teemu Selanne" is added
@@ -34,8 +33,13 @@ Delete an existing order
     And I press delete button for "Jari Kurri" order
   Then I can verify my order for "Jari Kurri" is deleted
 
+Remove item from catalog
+  Given product "Montreal" is added to the catalog
+  When I press delete of item "Montreal" in catalog
+  Then item "Montreal" is not in the catalog
+
 *** Keywords ***
-Get JSON Template  [Arguments]  ${form}
+Get JSON Template [Arguments] ${form}
   [Documentation]  Reads the json template. Template name is given as an argument.
   ...              Template should reside at the same directory as the test case.
   ${json}=  Get File  ${CURDIR}${/}${form}  encoding=utf-8
@@ -93,7 +97,7 @@ Add User Jari Kurri
   Set Test Variable  ${STREET}  East Street 1
   Set Test Variable  ${CITY}  New York
 
-Post JSON data  [Arguments]  ${session}  ${uri}  ${data}
+Post JSON data  [Arguments] ${session} ${uri} ${data}
   [Documentation]  Posts Customer data through REST API.
   Log  ${data}
   ${resp}=  Post Request  ${session}  ${uri}  data=${data}
@@ -150,9 +154,18 @@ I can verify my order for "${customer}" is deleted
   Page Should not contain  ${customer}
 
 I Remove The Catalog Through Service API #not working since no delete implementation in microservice demo
-    ${resp}=  Delete Request  catalogsrv  ${CATALOG_SERVICE_URL}/catalog/${CATALOG_ID}
-    Should Be Equal As Strings  ${resp.status_code}  204
+  ${resp}=  Delete Request  catalogsrv  ${CATALOG_SERVICE_URL}/catalog/${CATALOG_ID}
+  Should Be Equal As Strings  ${resp.status_code}  204
 
+When I press delete of item "${catalog_item}" in catalog
+  Page Should Contain Link  Home
+  Click Link  Home
+  Wait Until Element Is Visible  xpath=//a[contains(text(),'Catalog')]
+  Click Element  xpath=//div[contains(text(),'List / add / remove items')]/..//a[contains(text(),'Catalog')]
+  Click Element  //td[contains(text(),'${catalog_item}')]/..//input[contains(@class,'btn-link')]
+
+Then item "${catalog_item}" is not in the catalog
+  Wait Until Element Is Not Visible  //td[contains(text(),'${catalog_item}')]
 
 
 

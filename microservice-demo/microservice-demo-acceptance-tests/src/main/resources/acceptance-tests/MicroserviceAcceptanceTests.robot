@@ -27,24 +27,24 @@ Order a product from a catalog
     And I select customer "Teemu Selanne"
     And I submit the order
   Then I can verify my order
-#
-#Delete an existing order
-#  Given Product "Koho" is ordered by "Jari Kurri"
-#  When I have an order "Koho" for "Jari Kurri"
-#    And I press delete button for "Jari Kurri" order
-#  Then I can verify my order for "Jari Kurri" is deleted
-#
-#Remove item from catalog
-#  Given product "Montreal" is added to the catalog
-#  When I press delete of item "Montreal" in catalog
-#  Then item "Montreal" is not visible in the catalog
 
-#Add item to catalog
-#  Given item "Bauer" should not be in the catalog
-#  When I add item "Bauer"
-#   I set item price "98" to
-#   And I submit the item
-#  Then I can see my item "Bauer" in the catalog
+Delete an existing order
+  Given Product "Koho" is ordered by "Jari Kurri"
+  When I have an order "Koho" for "Jari Kurri"
+    And I press delete button for "Jari Kurri" order
+  Then I can verify my order for "Jari Kurri" is deleted
+
+Remove item from catalog
+  Given product "Montreal" is added to the catalog
+  When I press delete of item "Montreal" in catalog
+  Then item "Montreal" is not visible in the catalog
+
+Add item to catalog
+  Given item "Bauer" should not be in the catalog
+  When I add item "Bauer"
+    And I set item price "89" to
+    And I submit the item
+  Then I can see my item "Bauer" in the catalog
 
 *** Keywords ***
 Get JSON Template  [Arguments]  ${form}
@@ -170,15 +170,15 @@ I press delete of item "${catalog_item}" in catalog
   Click Link  Home
   Wait Until Element Is Visible  xpath=${CATALOG_LISTVIEW_XPATH}
   Click Element  xpath=${CATALOG_LISTVIEW_XPATH}
-  Click Element  //td[contains(text(),'${catalog_item}')]/..//input[contains(@class,'btn-link')]
+  Click Element  xpath=//td[contains(text(),'${catalog_item}')]/..//input[contains(@class,'btn-link')]
+  Wait Until Page Contains  Success
 
 item "${catalog_item}" is not visible in the catalog
-  Wait Until Element Is Not Visible  //td[contains(text(),'${catalog_item}')]
+  Wait Until Element Is Not Visible  xpath=//td[contains(text(),'${catalog_item}')]
 
 remove item "${catalog_item}" from catalog
-  Given product "${catalog_item}" is added to the catalog
   When I press delete of item "${catalog_item}" in catalog
-  Then item "${catalog_item}" is not in the catalog
+  Then item "${catalog_item}" is not visible in the catalog
 
 item "${catalog_item}" should not be in the catalog
   Wait Until Page Contains  Order : Add
@@ -186,18 +186,20 @@ item "${catalog_item}" should not be in the catalog
   Wait Until Element Is Visible  xpath=${CATALOG_LISTVIEW_XPATH}
   Click Element  xpath=${CATALOG_LISTVIEW_XPATH}
   Wait Until Page Contains  Item : View all
-
-  Wait Until Page Contains  ${catalog_item}
-
-  ${passed}=  Run Keyword And Return Status  Wait Until Page Not Contains  ${catalog_item}
-  Run Keyword Unless  "${passed}"  remove item "${catalog_item}" from catalog
+  ${passed}=  Run Keyword And Return Status  Page Should Not Contain  ${catalog_item}
+  Run Keyword Unless  ${passed}  remove item "${catalog_item}" from catalog
 
 I add item "${catalog_item}"
+  Page Should Contain Link  Home
+  Click Link  Home
+  Wait Until Element Is Visible  xpath=${CATALOG_LISTVIEW_XPATH}
+  Click Element  xpath=${CATALOG_LISTVIEW_XPATH}
+  Wait Until Page Contains  Item : View all
   Click Link  Add Item
   Input Text  id=name  ${catalog_item}
 
 I set item price "${price}" to
-  Input Text  id=name  ${price}
+  Input Text  id=price  ${price}
 
 I submit the item
   Click Button  Submit

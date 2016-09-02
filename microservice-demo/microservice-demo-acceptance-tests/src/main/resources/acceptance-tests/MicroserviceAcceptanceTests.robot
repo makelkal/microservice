@@ -259,16 +259,19 @@ navigate To Catalog List Page
   Go To  ${MAIN_URL}
   Wait Until Element Is Visible  xpath=${catalog_listview_xpath}
   Click Element  xpath=${catalog_listview_xpath}
+  Reload Page
   Wait Until Page Contains  Item : View all
 
 navigate To Order Page
   Go To  ${MAIN_URL}
   Wait Until Page Contains Element  xpath=//a[(text()='Order')]
   Click Link  Order
+  Reload Page
   Wait Until Page Contains  Order : View all
 
 navigate To Customer Page
   Go To  ${MAIN_URL}
   Wait Until Page Contains Element  xpath=//a[(text()='Customer')]
   Click Link  Customer
+  Reload Page
   Wait Until Page Contains  Customer : View all

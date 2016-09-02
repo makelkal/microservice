@@ -20,38 +20,47 @@ ${CUSTOMER_SERVICE_URL}
 ${CATALOG_SERVICE_URL}
 
 *** Test Cases ***
-Order a product from a catalog
-  Given order by "Teemu Selanne" should not exist
-    And customer "Teemu Selanne" should not exist
-    And product "Torspo" should not be in the catalog
-    And product "Torspo" is added to the catalog
-    And customer "Teemu Selanne" is added
-  When I order product "Torspo"
-    And I select customer "Teemu Selanne"
-    And I submit the order
-  Then I can verify my order
-
-Remove item from catalog
-  Given product "Montreal" should not be in the catalog
-    And product "Montreal" is added to the catalog
-  When I press delete of item "Montreal" in catalog
-  Then item "Montreal" is not visible in the catalog
-
-Add item to catalog
-  Given item "Bauer" should not be in the catalog
-  When I add item "Bauer"
-    And I set item price "89" to
-    And I submit the item
-  Then I can see my item "Bauer" in the catalog
+#Order a product from a catalog
+#  Given order by "Teemu Selanne" should not exist
+#    And customer "Teemu Selanne" should not exist
+#    And product "Torspo" should not be in the catalog
+#    And product "Torspo" is added to the catalog
+#    And customer "Teemu Selanne" is added
+#  When I order product "Torspo"
+#    And I select customer "Teemu Selanne"
+#    And I submit the order
+#  Then I can verify my order
+#
+#Remove item from catalog
+#  Given product "Montreal" should not be in the catalog
+#    And product "Montreal" is added to the catalog
+#  When I press delete of item "Montreal" in catalog
+#  Then item "Montreal" is not visible in the catalog
+#
+#Add item to catalog
+#  Given item "Bauer" should not be in the catalog
+#  When I add item "Bauer"
+#    And I set item price "89" to
+#    And I submit the item
+#  Then I can see my item "Bauer" in the catalog
 
 Delete an existing order
-  Given order by "Jari Kurri" should not exist
-    And customer "Jari Kurri" should not exist
-    And product "Koho" should not be in the catalog
-    And product "Koho" is ordered by "Jari Kurri"
-  When I have an order "Koho" for "Jari Kurri"
-    And I press delete button for "Jari Kurri" order
-  Then I can verify my order for "Jari Kurri" is deleted
+#  Given order by "Jari Kurri" should not exist
+#    And customer "Jari Kurri" should not exist
+#    And product "Koho" should not be in the catalog
+#    And product "Koho" is ordered by "Jari Kurri"
+#  When I have an order "Koho" for "Jari Kurri"
+#    And I press delete button for "Jari Kurri" order
+#  Then I can verify my order for "Jari Kurri" is deleted
+
+  Given product "Koho" is added to the catalog
+      And customer "Jari Kurri" is added
+    When I order product "Koho"
+      And I select customer "Jari Kurri"
+      And I submit the order
+    Then I can verify my order
+       And I press delete button for "Jari Kurri" order
+       And I can verify my order for "Jari Kurri" is deleted
 
 *** Keywords ***
 Get JSON Template  [Arguments]  ${form}

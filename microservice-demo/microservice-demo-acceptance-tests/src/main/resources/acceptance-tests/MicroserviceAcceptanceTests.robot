@@ -20,47 +20,38 @@ ${CUSTOMER_SERVICE_URL}
 ${CATALOG_SERVICE_URL}
 
 *** Test Cases ***
-#Order a product from a catalog
-#  Given order by "Teemu Selanne" should not exist
-#    And customer "Teemu Selanne" should not exist
-#    And product "Torspo" should not be in the catalog
-#    And product "Torspo" is added to the catalog
-#    And customer "Teemu Selanne" is added
-#  When I order product "Torspo"
-#    And I select customer "Teemu Selanne"
-#    And I submit the order
-#  Then I can verify my order
-#
-#Remove item from catalog
-#  Given product "Montreal" should not be in the catalog
-#    And product "Montreal" is added to the catalog
-#  When I press delete of item "Montreal" in catalog
-#  Then item "Montreal" is not visible in the catalog
-#
-#Add item to catalog
-#  Given item "Bauer" should not be in the catalog
-#  When I add item "Bauer"
-#    And I set item price "89" to
-#    And I submit the item
-#  Then I can see my item "Bauer" in the catalog
-
 Delete an existing order
-#  Given order by "Jari Kurri" should not exist
-#    And customer "Jari Kurri" should not exist
-#    And product "Koho" should not be in the catalog
-#    And product "Koho" is ordered by "Jari Kurri"
-#  When I have an order "Koho" for "Jari Kurri"
-#    And I press delete button for "Jari Kurri" order
-#  Then I can verify my order for "Jari Kurri" is deleted
+  Given order by "Jari Kurri" should not exist
+    And customer "Jari Kurri" should not exist
+    And product "Koho" should not be in the catalog
+    And product "Koho" is ordered by "Jari Kurri"
+  When I have an order "Koho" for "Jari Kurri"
+    And I press delete button for "Jari Kurri" order
+  Then I can verify my order for "Jari Kurri" is deleted
 
-  Given product "Koho" is added to the catalog
-      And customer "Jari Kurri" is added
-    When I order product "Koho"
-      And I select customer "Jari Kurri"
-      And I submit the order
-    Then I can verify my order
-       And I press delete button for "Jari Kurri" order
-       And I can verify my order for "Jari Kurri" is deleted
+Order a product from a catalog
+  Given order by "Teemu Selanne" should not exist
+    And customer "Teemu Selanne" should not exist
+    And product "Torspo" should not be in the catalog
+    And product "Torspo" is added to the catalog
+    And customer "Teemu Selanne" is added
+  When I order product "Torspo"
+    And I select customer "Teemu Selanne"
+    And I submit the order
+  Then I can verify my order
+
+Remove item from catalog
+  Given product "Montreal" should not be in the catalog
+    And product "Montreal" is added to the catalog
+  When I press delete of item "Montreal" in catalog
+  Then item "Montreal" is not visible in the catalog
+
+Add item to catalog
+  Given item "Bauer" should not be in the catalog
+  When I add item "Bauer"
+    And I set item price "89" to
+    And I submit the item
+  Then I can see my item "Bauer" in the catalog
 
 *** Keywords ***
 Get JSON Template  [Arguments]  ${form}
@@ -104,6 +95,7 @@ Open Browser And Navigate to Main Page
   Reload Page
 
 Product "${name}" is added to the catalog
+  wait for navigating to Catalog List Page  #to make sure that catalog service is up
   Get JSON Template  catalog.json
   Set Test Variable  ${CATALOG_ITEM}  ${name}
   Set Test Variable  ${CATALOG_PRICE}  119.0
@@ -113,18 +105,19 @@ Product "${name}" is added to the catalog
   Log  ${CATALOG_ID}
 
 Customer "${name}" is added
-    Get JSON Template  customer.json
-    Run Keyword If  "${name}"=="Teemu Selanne"  Add User Teemu Selanne
-    Run Keyword If  "${name}"=="Jari Kurri"  Add User Jari Kurri
-    ${data}=  Replace Variables  ${TEMPLATE}
+  wait for navigating to Customer Page  #to make sure that customer service is up
+  Get JSON Template  customer.json
+  Run Keyword If  "${name}"=="Teemu Selanne"  Add User Teemu Selanne
+  Run Keyword If  "${name}"=="Jari Kurri"  Add User Jari Kurri
+  ${data}=  Replace Variables  ${TEMPLATE}
     Post JSON data  custsrv  /customer  ${data}
 
 Add User Teemu Selanne
-    Set Test Variable  ${NAME}  Selanne
-    Set Test Variable  ${FIRSTNAME}  Teemu
-    Set Test Variable  ${EMAIL}  teemu.selanne@gmail.com
-    Set Test Variable  ${STREET}  Madre Selva LN
-    Set Test Variable  ${CITY}  San Diego
+  Set Test Variable  ${NAME}  Selanne
+  Set Test Variable  ${FIRSTNAME}  Teemu
+  Set Test Variable  ${EMAIL}  teemu.selanne@gmail.com
+  Set Test Variable  ${STREET}  Madre Selva LN
+  Set Test Variable  ${CITY}  San Diego
 
 Add User Jari Kurri
   Set Test Variable  ${NAME}  Kurri

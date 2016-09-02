@@ -31,15 +31,6 @@ Order a product from a catalog
     And I submit the order
   Then I can verify my order
 
-Delete an existing order
-  Given order by "Jari Kurri" should not exist
-    And customer "Jari Kurri" should not exist
-    And product "Koho" should not be in the catalog
-    And product "Koho" is ordered by "Jari Kurri"
-  When I have an order "Koho" for "Jari Kurri"
-    And I press delete button for "Jari Kurri" order
-  Then I can verify my order for "Jari Kurri" is deleted
-
 Remove item from catalog
   Given product "Montreal" should not be in the catalog
     And product "Montreal" is added to the catalog
@@ -52,6 +43,15 @@ Add item to catalog
     And I set item price "89" to
     And I submit the item
   Then I can see my item "Bauer" in the catalog
+
+Delete an existing order
+  Given order by "Jari Kurri" should not exist
+    And customer "Jari Kurri" should not exist
+    And product "Koho" should not be in the catalog
+    And product "Koho" is ordered by "Jari Kurri"
+  When I have an order "Koho" for "Jari Kurri"
+    And I press delete button for "Jari Kurri" order
+  Then I can verify my order for "Jari Kurri" is deleted
 
 *** Keywords ***
 Get JSON Template  [Arguments]  ${form}

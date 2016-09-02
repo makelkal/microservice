@@ -268,8 +268,10 @@ wait for navigating to Catalog List Page
     \  ${passed}=  Run Keyword And Return Status  navigate To Catalog List Page
     \  Run Keyword Unless  ${passed}  Reload Page
     \  RUn Keyword If  ${passed}  Exit For Loop
-    Sleep  2s
+    Sleep  1s
     Reload Page
+  Sleep 2s
+
 
 navigate To Order Page
   Go To  ${MAIN_URL}
@@ -283,8 +285,9 @@ wait for navigating to Order Page
     \  ${passed}=  Run Keyword And Return Status  navigate To Order Page
     \  Run Keyword Unless  ${passed}  Reload Page
     \  RUn Keyword If  ${passed}  Exit For Loop
-    Sleep  2s
+    Sleep  1s
     Reload Page
+  Sleep 2s
 
 navigate To Customer Page
   Go To  ${MAIN_URL}
@@ -298,5 +301,6 @@ wait for navigating to Customer Page
     \  ${passed}=  Run Keyword And Return Status  navigate To Customer Page
     \  Run Keyword Unless  ${passed}  Reload Page
     \  RUn Keyword If  ${passed}  Exit For Loop
-    Sleep  2s
+    Sleep  1s
     Reload Page
+  Sleep 2s

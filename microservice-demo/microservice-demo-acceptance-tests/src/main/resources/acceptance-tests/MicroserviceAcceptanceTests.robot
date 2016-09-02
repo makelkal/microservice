@@ -138,7 +138,7 @@ I select customer "${name}"
   Select From List  customerId  ${name}
 
 I order product "${product}"
-  navigate To Order Page
+  wait for navigating to Order Page
   Click Link  Add Order
   Wait Until Page Contains   Order : Add
   Click Button  addLine
@@ -150,7 +150,7 @@ I submit the order
   Wait Until Page Contains  Success
 
 I can verify my order
-  navigate To Order Page
+  wait for navigating to Order Page
   Click Link  xpath=//table/tbody/tr[last()]/td/a
   ${name}=  Get Text  xpath=//div[text()='Customer']/following-sibling::div
   Should Be Equal  ${NAME}  ${name}
@@ -166,20 +166,20 @@ product "${catalog_item}" is ordered by "${customer}"
   Then I can verify my order
 
 I have an order "${catalog_item}" for "${customer}"
-  navigate To Order Page
+  wait for navigating to Order Page
   Wait Until Page Contains  Add Order
   Click Link  xpath=//table/tbody/tr[last()]/td/a
   Wait Until Page Contains  ${customer}
   Wait Until Page Contains  ${catalog_item}
 
 I press delete button for "${customer}" order
-  navigate To Order Page
+  wait for navigating to Order Page
   Wait Until Page Contains  Add Order
   Page Should contain  ${customer}
   Click Element  xpath=//table/tbody/tr[last()]//td[contains(text(),'${customer}')]/..//input[contains(@class,'btn-link')]
 
 I can verify my order for "${customer}" is deleted
-  navigate To Order Page
+  wait for navigating to Order Page
   Wait Until Page Contains  Add Order
   Page Should not contain  ${customer}
 
@@ -188,7 +188,7 @@ I Remove The Catalog Through Service API #not working since no delete implementa
   Should Be Equal As Strings  ${resp.status_code}  204
 
 I press delete of item "${catalog_item}" in catalog
-  navigate To Catalog List Page
+  wait for navigating to Catalog List Page
   Wait Until Page Contains  ${catalog_item}
   Click Element  xpath=//td[contains(text(),'${catalog_item}')]/..//input[contains(@class,'btn-link')]
   Wait Until Page Contains  Success
@@ -201,12 +201,12 @@ remove item "${catalog_item}" from catalog
   item "${catalog_item}" is not visible in the catalog
 
 item "${catalog_item}" should not be in the catalog
-  navigate To Catalog List Page
+  wait for navigating to Catalog List Page
   ${passed}=  Run Keyword And Return Status  Page Should Not Contain  ${catalog_item}
   Run Keyword Unless  ${passed}  remove item "${catalog_item}" from catalog
 
 I add item "${catalog_item}"
-  navigate To Catalog List Page
+  wait for navigating to Catalog List Page
   Click Link  Add Item
   Input Text  id=name  ${catalog_item}
 
@@ -218,7 +218,7 @@ I submit the item
   Wait Until Page Contains  Success
 
 I can see my item "${catalog_item}" in the catalog
-  navigate To Catalog List Page
+  wait for navigating to Catalog List Page
   Page Should Contain  ${catalog_item}
 
 I press delete of item "${customer}" in order page
@@ -229,13 +229,13 @@ item "${customer}" is not visible in the customer page
   Wait Until Element Is Not Visible  xpath=//td[contains(text(),'${customer}')]
 
 order by "${customer}" should not exist
-  navigate To Order Page
+  wait for navigating to Order Page
   ${passed}=  Run Keyword And Return Status  Page Should Not Contain  ${customer}
   Run Keyword Unless  ${passed}  I press delete of item "${customer}" in order page
   item "${customer}" is not visible in the customer page
 
 product "${catalog_item}" should not be in the catalog
-  navigate To Catalog List Page
+  wait for navigating to Catalog List Page
   ${passed}=  Run Keyword And Return Status  Page Should Not Contain  ${catalog_item}
   Run Keyword Unless  ${passed}  I press delete of item "${catalog_item}" in catalog
   item "${catalog_item}" is not visible in the catalog
@@ -246,7 +246,7 @@ I press delete of item in customer page
   Wait Until Page Contains  Success
 
 customer "${customer}" should not exist
-  navigate To Customer Page
+  wait for navigating to Customer Page
   @{words}  Split String  ${customer}
   ${first_name}=  Set Variable  @{words}[0]
   ${last_name}=  Set Variable  @{words}[1]
@@ -259,8 +259,15 @@ navigate To Catalog List Page
   Go To  ${MAIN_URL}
   Wait Until Element Is Visible  xpath=${catalog_listview_xpath}
   Click Element  xpath=${catalog_listview_xpath}
-  Reload Page
   Wait Until Page Contains  Item : View all
+
+wait for navigating to Catalog List Page
+  :FOR  ${INDEX}  IN RANGE  1  10
+    \  ${passed}=  Run Keyword And Return Status  navigate To Catalog List Page
+    \  Run Keyword Unless  ${passed}  Reload Page
+    \  RUn Keyword If  ${passed}  Exit For Loop
+    Sleep  2s
+    Reload Page
 
 navigate To Order Page
   Go To  ${MAIN_URL}
@@ -269,9 +276,25 @@ navigate To Order Page
   Reload Page
   Wait Until Page Contains  Order : View all
 
+wait for navigating to Order Page
+  :FOR  ${INDEX}  IN RANGE  1  10
+    \  ${passed}=  Run Keyword And Return Status  navigate To Order Page
+    \  Run Keyword Unless  ${passed}  Reload Page
+    \  RUn Keyword If  ${passed}  Exit For Loop
+    Sleep  2s
+    Reload Page
+
 navigate To Customer Page
   Go To  ${MAIN_URL}
   Wait Until Page Contains Element  xpath=//a[(text()='Customer')]
   Click Link  Customer
   Reload Page
   Wait Until Page Contains  Customer : View all
+
+wait for navigating to Customer Page
+  :FOR  ${INDEX}  IN RANGE  1  10
+    \  ${passed}=  Run Keyword And Return Status  navigate To Customer Page
+    \  Run Keyword Unless  ${passed}  Reload Page
+    \  RUn Keyword If  ${passed}  Exit For Loop
+    Sleep  2s
+    Reload Page

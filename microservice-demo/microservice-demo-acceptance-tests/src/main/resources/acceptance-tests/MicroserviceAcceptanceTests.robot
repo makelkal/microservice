@@ -270,8 +270,7 @@ wait for navigating to Catalog List Page
     \  RUn Keyword If  ${passed}  Exit For Loop
     Sleep  1s
     Reload Page
-  Sleep 2s
-
+  Sleep  2s
 
 navigate To Order Page
   Go To  ${MAIN_URL}
@@ -287,7 +286,7 @@ wait for navigating to Order Page
     \  RUn Keyword If  ${passed}  Exit For Loop
     Sleep  1s
     Reload Page
-  Sleep 2s
+  Sleep  2s
 
 navigate To Customer Page
   Go To  ${MAIN_URL}
@@ -303,4 +302,4 @@ wait for navigating to Customer Page
     \  RUn Keyword If  ${passed}  Exit For Loop
     Sleep  1s
     Reload Page
-  Sleep 2s
+  Sleep  2s

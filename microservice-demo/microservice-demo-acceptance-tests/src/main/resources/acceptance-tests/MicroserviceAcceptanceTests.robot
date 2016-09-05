@@ -6,6 +6,7 @@ Library     Collections
 Library     String
 
 Test Setup  Open Browser And Navigate to Main Page
+#Test Setup  Open Browser And Navigate to Add Order Page
 Suite Setup  Initialize Session
 Suite Teardown  Delete All Sessions
 #Test Teardown  Close Browser
@@ -20,16 +21,17 @@ ${CUSTOMER_SERVICE_URL}
 ${CATALOG_SERVICE_URL}
 
 *** Test Cases ***
-Order a product from a catalog
-  Given order by "Teemu Selanne" should not exist
-    And product "Torspo" should not be in the catalog
-    And customer "Teemu Selanne" should not exist
-    And product "Torspo" is added to the catalog
-    And customer "Teemu Selanne" is added
-  When I order product "Torspo"
-    And I select customer "Teemu Selanne"
-    And I submit the order
-  Then I can verify my order
+#Order a product from a catalog
+#  Given order by "Teemu Selanne" should not exist
+#    And product "Torspo" should not be in the catalog
+#    And customer "Teemu Selanne" should not exist
+#    And product "Torspo" is added to the catalog
+#    And customer "Teemu Selanne" is added
+#  When I order product "Torspo"
+#    And I select customer "Teemu Selanne"
+#    And I submit the order
+#  Then I can verify my order
+#  [Teardown]  Close Browser
 
 Delete an existing order
   Given order by "Jari Kurri" should not exist
@@ -39,19 +41,22 @@ Delete an existing order
   When I have an order "Koho" for "Jari Kurri"
     And I press delete button for "Jari Kurri" order
   Then I can verify my order for "Jari Kurri" is deleted
+  [Teardown]  Close Browser
 
-Remove item from catalog
-  Given product "Montreal" should not be in the catalog
-    And product "Montreal" is added to the catalog
-  When I press delete of item "Montreal" in catalog
-  Then item "Montreal" is not visible in the catalog
-
-Add item to catalog
-  Given item "Bauer" should not be in the catalog
-  When I add item "Bauer"
-    And I set item price "89" to
-    And I submit the item
-  Then I can see my item "Bauer" in the catalog
+#Remove item from catalog
+#  Given product "Montreal" should not be in the catalog
+#    And product "Montreal" is added to the catalog
+#  When I press delete of item "Montreal" in catalog
+#  Then item "Montreal" is not visible in the catalog
+#  [Teardown]  Close Browser
+#
+#Add item to catalog
+#  Given item "Bauer" should not be in the catalog
+#  When I add item "Bauer"
+#    And I set item price "89" to
+#    And I submit the item
+#  Then I can see my item "Bauer" in the catalog
+#  [Teardown]  Close Browser
 
 *** Keywords ***
 Get JSON Template  [Arguments]  ${form}
@@ -100,7 +105,9 @@ Product "${name}" is added to the catalog
   Set Test Variable  ${CATALOG_ITEM}  ${name}
   Set Test Variable  ${CATALOG_PRICE}  119.0
   ${data}=  Replace Variables  ${TEMPLATE}
-  ${result}=  Post JSON data  catalogsrv  /catalog  ${data}
+  #${result}=  Post JSON data  catalogsrv  /catalog  ${data}
+  ${result} =  Wait Until Keyword Succeeds  10x  3s  Post JSON data  catalogsrv  /catalog  ${data}
+  Log  ${result}
   Set Test Variable  ${CATALOG_ID}  ${result['id']}
   Log  ${CATALOG_ID}
 
@@ -110,7 +117,8 @@ Customer "${name}" is added
   Run Keyword If  "${name}"=="Teemu Selanne"  Add User Teemu Selanne
   Run Keyword If  "${name}"=="Jari Kurri"  Add User Jari Kurri
   ${data}=  Replace Variables  ${TEMPLATE}
-    Post JSON data  custsrv  /customer  ${data}
+  #Post JSON data  custsrv  /customer  ${data}
+  Wait Until Keyword Succeeds  10x  3s  Post JSON data  custsrv  /customer  ${data}
 
 Add User Teemu Selanne
   Set Test Variable  ${NAME}  Selanne
@@ -286,7 +294,6 @@ wait for navigating to Order Page
     \  RUn Keyword If  ${passed}  Exit For Loop
     Sleep  1s
     Reload Page
-  Sleep  2s
 
 navigate To Customer Page
   Go To  ${MAIN_URL}

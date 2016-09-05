@@ -31,7 +31,7 @@ Order a product from a catalog
     And I select customer "Teemu Selanne"
     And I submit the order
   Then I can verify my order
-  [Teardown]  Close Browser
+  #[Teardown]  Close Browser
 
 Delete an existing order
   Given order by "Jari Kurri" should not exist
@@ -41,14 +41,14 @@ Delete an existing order
   When I have an order "Koho" for "Jari Kurri"
     And I press delete button for "Jari Kurri" order
   Then I can verify my order for "Jari Kurri" is deleted
-  [Teardown]  Close Browser
+  #[Teardown]  Close Browser
 
 Remove item from catalog
   Given product "Montreal" should not be in the catalog
     And product "Montreal" is added to the catalog
   When I press delete of item "Montreal" in catalog
   Then item "Montreal" is not visible in the catalog
-  [Teardown]  Close Browser
+  #[Teardown]  Close Browser
 
 Add item to catalog
   Given item "Bauer" should not be in the catalog
@@ -56,7 +56,7 @@ Add item to catalog
     And I set item price "89" to
     And I submit the item
   Then I can see my item "Bauer" in the catalog
-  [Teardown]  Close Browser
+  #[Teardown]  Close Browser
 
 *** Keywords ***
 Get JSON Template  [Arguments]  ${form}

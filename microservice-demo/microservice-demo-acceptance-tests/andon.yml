@@ -1,6 +1,3 @@
-general:
-  pipeline_base_name: ACCT
-  
 acceptance_testing:
   dependency:
    - Catalog [CompileAndUnitTests]

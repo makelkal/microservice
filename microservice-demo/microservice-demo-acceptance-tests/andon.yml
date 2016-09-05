@@ -6,9 +6,9 @@ acceptance_testing:
    - Zuul [CompileAndUnitTests]
   compose_file_path: /src/test/resources
   compose_file_name: docker-compose.yml
-#  go_cd_agent_props:
-#    - java:8
-#    - maven
+  go_cd_agent_props:
+    - java:8
+    - maven
   
 #  cron_timer: 0 0 22 ? * MON-FRI
   

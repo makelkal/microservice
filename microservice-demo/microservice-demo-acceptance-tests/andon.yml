@@ -5,7 +5,7 @@ acceptance_testing:
   dependency:
    - Catalog [CompileAndUnitTests]
    - Customer [CompileAndUnitTests]
-   - Order [CompileAndUnitTests]
+#   - Order [CompileAndUnitTests]
    - Zuul [CompileAndUnitTests]
   compose_file_path: /src/test/resources
   compose_file_name: docker-compose.yml

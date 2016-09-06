@@ -6,4 +6,3 @@ class URLLibrary(object):
 
     def url_decode(self, url):
         return urllib.unquote(url)
-

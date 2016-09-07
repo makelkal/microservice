@@ -1,6 +1,7 @@
 version: '2'
 services:
   eureka:
+    build: ../../../../.
     image: eureka
     expose:
       - "8761"

@@ -8,28 +8,37 @@ Suite Setup     Initialize Session
 Suite Teardown  Delete All Sessions
 
 *** Variables ***
-${SERVICE_URL}          http://localhost:9000
+${SERVICE_URL}          http://localhost:9002
 ${CATALOG_ID}          1
 
 
 *** Test Cases ***
 Get a catalog item
-    [Documentation]  Reads the defaut customer information from the database
-    Given catalog item exists at the database
-    When I get the catalog item through REST API
-    Then catalog item name should be "iPod"
-     And catalog item price should be "42.0"
+  [Documentation]  Reads the defaut customer information from the database
+  Given catalog item exists at the database
+  When I get the catalog item through REST API
+  Then catalog item name should be "iPod"
+   And catalog item price should be "42.0"
 
 Add a catalog item
-    [Documentation]  Adds new catalog item into database
-    ...              and then reads the newly created entry from the database
-    [Setup]  Get JSON Template  catalog.json
-    Given catalog item name is "Titan"
-     and catalog item price is "69.0"
-    When I add the catalog item through REST API
-     And I get the catalog item through REST API
-    Then catalog item name should be "Titan"
-     And catalog item price should be "69.0"
+  [Documentation]  Adds new catalog item into database
+  ...              and then reads the newly created entry from the database
+  [Setup]  Get JSON Template  catalog.json
+  Given catalog item name is "Titan"
+   And catalog item price is "69.0"
+  When I add the catalog item through REST API
+   And I get the catalog item through REST API
+  Then catalog item name should be "Titan"
+   And catalog item price should be "69.0"
+
+Delete a catalog item
+  [Documentation]  Deletes catalog item from database
+  [Setup]  Get JSON Template  catalog.json
+  Given catalog item name is "Titan"
+   And catalog item price is "69.0"
+   And I add the catalog item through REST API
+  When I delete the catalog item through REST API
+  Then catalog item should not exist in the database
 
 *** Keywords ***
 Get JSON Template  [Arguments]  ${form}
@@ -95,4 +104,20 @@ I add the catalog item through REST API
     ${data}=  Replace Variables  ${TEMPLATE}
     ${result}=  Post JSON data  /catalog  ${data}
     Set Test Variable  ${CATALOG_ID}  ${result['id']}
+
+I delete the catalog item through REST API  [Arguments]  ${id}=${CATALOG_ID}
+    [Documentation]  Deleted catalog item from the database.
+    ${result}=  Delete JSON data  /catalog  ${id}
+
+
+Delete JSON data  [Arguments]  ${uri}  ${id}
+  [Documentation]  Removes the object identfied by id through REST api
+  Log  ${id}
+  ${resp}=  Delete Request  appsrv  ${uri}/${id}
+  Should Be Equal As Strings  ${resp.status_code}  204
+
+catalog item should not exist in the database
+  ${response} =  Run Keyword And Return Status  I get the catalog item through REST API
+  Should Be Equal  ${response}  ${FALSE}
+
 

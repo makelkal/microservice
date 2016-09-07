@@ -8,7 +8,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<properties>
-	 <service_url>http://localhost:9000</service_url>
+	 <service_url>http://localhost:9001</service_url>
 	</properties>
 
 	<artifactId>microservice-demo-customer</artifactId>

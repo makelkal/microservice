@@ -21,9 +21,9 @@ Get a customer
    and email should be "eberhard.wolff@gmail.com"
    and street should be "Unter den Linden"
    and city should be "Berlin"
-  
+
 Add a new customer
-  [Documentation]  Adds a new customer to the database 
+  [Documentation]  Adds a new customer to the database
   ...              and then reads the newly created entry from the database
   [Setup]  Get JSON Template  customer.json
   Given customer name is "Selänne"
@@ -38,23 +38,35 @@ Add a new customer
    and email should be "teemu.selanne@gmail.com"
    and street should be "Madre Selva LN"
    and city should be "San Diego"
-   
- *** Keywords ***
-    
+
+Delete a customer
+  [Documentation]  Deletes customer from the database
+  [Setup]  Get JSON Template  customer.json
+  Given customer name is "Kurri"
+   And firstname is "Jari"
+   And email is "teemu.selanne@gmail.com"
+   And street is "East Street 1"
+   And city is "New York"
+   And I add the customer through REST API
+   and I get the Customer through REST API
+  When I delete the customer through REST API
+  Then customer should not exist in the database
+
+*** Keywords ***
 Get JSON Template  [Arguments]  ${form}
-  [Documentation]  Reads the json template. Template name is given as an argument. 
-  ...              Template should reside at the same directory as the test case. 
+  [Documentation]  Reads the json template. Template name is given as an argument.
+  ...              Template should reside at the same directory as the test case.
   ${json}=  Get File  ${CURDIR}${/}${form}  encoding=utf-8
   Set Test Variable  ${TEMPLATE}  ${json}
 
 Initialize Session
-  [Documentation]  Creates context for REST API calls. 
+  [Documentation]  Creates context for REST API calls.
   Set Log Level         TRACE
   ${headers}=  Create Dictionary  Content-type=application/json  Accept=*/*  Accept-language=en-US,en;fi  Cache-control=no-cache
   Set Suite Variable  ${HEADERS}  ${headers}
-  Create Session  appsrv  ${SERVICE_URL}  headers=${headers}  
+  Create Session  appsrv  ${SERVICE_URL}  headers=${headers}
 
-I get the Customer through REST API  [Arguments]  ${cust_id}=${CUSTOMER_ID}  
+I get the Customer through REST API  [Arguments]  ${cust_id}=${CUSTOMER_ID}
   [Documentation]  Reads the customer from the database. The default value is customer id 1
   ${result}=  Get JSON data  /customer  ${cust_id}
   Set Test Variable  ${JSON_CUSTOMER}  ${result}
@@ -65,8 +77,8 @@ I Add The Customer Through REST API
   ...              to a test variable CUSTOMER_ID
   ${data}=  Replace Variables  ${TEMPLATE}
   ${result}=  Post JSON data  /customer  ${data}
-  Set Test Variable  ${CUSTOMER_ID}  ${result['id']}  
- 
+  Set Test Variable  ${CUSTOMER_ID}  ${result['id']}
+
 
 Get JSON data  [Arguments]   ${uri}  ${cust_id}
   [Documentation]  Reads the data as JSON object through REST API. The service URI is given as an argument.
@@ -86,7 +98,7 @@ Post JSON data  [Arguments]  ${uri}  ${data}
   Should Be Equal As Strings  ${resp.status_code}  201
   ${actual}=  To Json  ${resp.content}
   Log  ${actual}
-  [Return]  ${actual} 
+  [Return]  ${actual}
 
 Put JSON data  [Arguments]  ${uri}  ${data}
   [Documentation]  Update existing data through REST api
@@ -95,16 +107,10 @@ Put JSON data  [Arguments]  ${uri}  ${data}
   Should Be Equal As Strings  ${resp.status_code}  200
   ${actual}=  To Json  ${resp.content}
   Log  ${actual}
-  [Return]  ${actual} 
-
-Delete JSON data  [Arguments]  ${uri}  ${cust_id}
-  [Documentation]  Removes the object identfied by id through REST api
-  Log  ${cust_id}
-  ${resp}=  Delete Request  appsrv  ${uri}/${cust_id}
-  Should Be Equal As Strings  ${resp.status_code}  204
+  [Return]  ${actual}
 
 Customer exists at the database
-    Log  ""   
+    Log  ""
 
 Customer name is "${name}"
   Set Test Variable  ${NAME}  ${name}
@@ -135,3 +141,18 @@ Street should be "${street}"
 
 City should be "${city}"
     Should Be Equal As Strings  ${JSON_CUSTOMER['city']}  ${city}
+
+I delete the customer through REST API  [Arguments]  ${id}=${CUSTOMER_ID}
+    [Documentation]  Deleted catalog item from the database.
+    ${result}=  Delete JSON data  /customer  ${id}
+
+
+Delete JSON data  [Arguments]  ${uri}  ${id}
+  [Documentation]  Removes the object identfied by id through REST api
+  Log  ${id}
+  ${resp}=  Delete Request  appsrv  ${uri}/${id}
+  Should Be Equal As Strings  ${resp.status_code}  204
+
+customer should not exist in the database
+  ${response} =  Run Keyword And Return Status  I get the Customer through REST API
+  Should Be Equal  ${response}  ${FALSE}

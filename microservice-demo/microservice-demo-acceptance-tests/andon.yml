@@ -63,8 +63,8 @@ production:
     - sudo docker push eekamak/customer
     - sudo docker tag order eekamak/order
     - sudo docker push eekamak/order
-    - sudo docker tag customer eekamak/eureka
+    - sudo docker tag eureka eekamak/eureka
     - sudo docker push eekamak/eureka
-    - sudo docker tag order eekamak/zuul
+    - sudo docker tag zuul eekamak/zuul
     - sudo docker push eekamak/zuul
 

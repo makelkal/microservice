@@ -1,0 +1,31 @@
+---
+- hosts: andonprod
+  vars:
+    git_url: https://raw.githubusercontent.com/Kalle80/microservice/master/docker/docker-compose.yml
+    git_user: ilppaju
+    andon_home: /etc/andon
+
+  pre_tasks:
+    - name: install docker-compose
+      pip: name=docker-compose state=present
+
+  roles:
+    - dochang.docker
+
+  tasks:
+
+  - name: Create Andon home directory
+    file: path={{ andon_home }} group=docker state=directory mode=0771
+    become: yes
+
+  - name: Get docker-compose file from github
+    get_url: url={{ git_url }} url_username={{ git_user }} url_password={{ git_passwd }} dest={{ andon_home }}
+
+  - name: Login to Docker Hub
+    docker_login: username=ilppaju password={{ docker_passwd }} email=ilpo.paju@tieto.com
+
+  - name: Pull docker images
+    command: docker-compose pull chdir={{ andon_home }}
+
+  - name: Start the docker services
+    docker_service: project_src={{ andon_home }} state=present

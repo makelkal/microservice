@@ -11,12 +11,20 @@ acceptance_testing:
     - maven
   
 #  cron_timer: 0 0 22 ? * MON-FRI
-  
+
 #  post_stage:
-#      custom_cmd:
-#        - sudo docker tag catalog eekamak/catalog
-#        - sudo docker push eekamak/catalog
-    
+#    custom_cmd:
+#      - sudo docker tag catalog eekamak/catalog
+#      - sudo docker push eekamak/catalog
+#      - sudo docker tag customer eekamak/customer
+#      - sudo docker push eekamak/customer
+#      - sudo docker tag order eekamak/order
+#      - sudo docker push eekamak/order
+#      - sudo docker tag customer eekamak/eureka
+#      - sudo docker push eekamak/eureka
+#      - sudo docker tag order eekamak/zuul
+#      - sudo docker push eekamak/zuul
+
   tests:
     - test_commands:
        - true
@@ -52,8 +60,8 @@ production:
   dependency:
    - Microservice_Acceptance [AcceptanceTestStage]
   trigger_mode: manual
-#  go_cd_agent_props:
-#    - ansible
+  go_cd_agent_props:
+    - ansible
   custom_cmd:
     - sudo docker tag catalog eekamak/catalog
     - sudo docker push eekamak/catalog
@@ -61,8 +69,8 @@ production:
     - sudo docker push eekamak/customer
     - sudo docker tag order eekamak/order
     - sudo docker push eekamak/order
-    - sudo docker tag customer eekamak/eureka
+    - sudo docker tag eureka eekamak/eureka
     - sudo docker push eekamak/eureka
-    - sudo docker tag order eekamak/zuul
+    - sudo docker tag zuul eekamak/zuul
     - sudo docker push eekamak/zuul
 

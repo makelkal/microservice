@@ -8,7 +8,19 @@ acceptance_testing:
   compose_file_name: docker-compose.yml
   
 #  cron_timer: 0 0 22 ? * MON-FRI
-  
+#  post_stage:
+#    custom_cmd:
+#      - sudo docker tag catalog eekamak/catalog
+#      - sudo docker push eekamak/catalog
+#      - sudo docker tag customer eekamak/customer
+#      - sudo docker push eekamak/customer
+#      - sudo docker tag order eekamak/order
+#      - sudo docker push eekamak/order
+#      - sudo docker tag customer eekamak/eureka
+#      - sudo docker push eekamak/eureka
+#      - sudo docker tag order eekamak/zuul
+#      - sudo docker push eekamak/zuul
+
   tests:
     - test_commands:
       - mvn clean -P robot -D robot.browser=chrome -D robot.remote_url=http://hub:4444/wd/hub -D robot.order.url=http://zuul:8080/order/ -D robot.main.url=http://zuul:8080 -D robot.catalog_rest_url=http://catalog:8080 -D robot.customer_rest_url=http://customer:8080 clean install

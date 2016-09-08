@@ -69,5 +69,4 @@ production:
     - sudo docker push eekamak/eureka
     - sudo docker tag zuul eekamak/zuul
     - sudo docker push eekamak/zuul
-    - ansible-playbook -i src/main/resources/ansible-scripts/inventory src/main/resources/ansible-scripts/microservice-playbook.yml -e git_passwd=J0hannes -e docker_passwd=hjn152
 

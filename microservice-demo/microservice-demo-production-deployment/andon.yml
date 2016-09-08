@@ -1,3 +1,6 @@
+general:
+  pipeline_base_name: Prod Deployment
+
 production:
   dependency:
    - Microservice_Acceptance [AcceptanceTestStage]

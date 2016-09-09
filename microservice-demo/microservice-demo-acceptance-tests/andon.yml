@@ -57,8 +57,8 @@ acceptance_testing:
 #      - bookapprest.mari
   
 production:
-  dependency:
-   - Microservice_Acceptance [AcceptanceTestStage]
+#  dependency:
+#   - Microservice_Acceptance [AcceptanceTestStage]
   trigger_mode: manual
 #  go_cd_agent_props:
 #    - ansible

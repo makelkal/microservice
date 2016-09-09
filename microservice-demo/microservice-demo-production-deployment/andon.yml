@@ -18,3 +18,8 @@ production:
     - sudo docker push eekamak/eureka
     - sudo docker tag zuul eekamak/zuul
     - sudo docker push eekamak/zuul
+
+  post_stage:
+      custom_cmd:
+        - true
+  

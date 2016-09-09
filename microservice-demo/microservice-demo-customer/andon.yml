@@ -16,6 +16,14 @@ integration_testing:
   compose_file_path: /src/test/resources/docker-compose
   compose_file_name: docker-compose.yml
   
+  post_stage:
+  custom_cmd:
+    - sudo docker tag catalog eekamak/catalog
+    - sudo docker push eekamak/catalog
+    - sudo docker tag customer eekamak/customer
+    - sudo docker push eekamak/customer
+    - sudo docker tag order eekamak/order
+  
   tests:
     - test_commands:
       - mvn -P Robot -D service_url=http://customer:8080 install

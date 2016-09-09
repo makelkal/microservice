@@ -56,21 +56,3 @@ acceptance_testing:
 #    mari_file_names:
 #      - bookapprest.mari
   
-production:
-  dependency:
-   - Microservice_Acceptance [AcceptanceTestStage]
-  trigger_mode: manual
-#  go_cd_agent_props:
-#    - ansible
-  custom_cmd:
-    - sudo docker tag catalog eekamak/catalog
-    - sudo docker push eekamak/catalog
-    - sudo docker tag customer eekamak/customer
-    - sudo docker push eekamak/customer
-    - sudo docker tag order eekamak/order
-    - sudo docker push eekamak/order
-    - sudo docker tag eureka eekamak/eureka
-    - sudo docker push eekamak/eureka
-    - sudo docker tag zuul eekamak/zuul
-    - sudo docker push eekamak/zuul
-

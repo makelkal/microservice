@@ -26,14 +26,14 @@ Add a new customer
   [Documentation]  Adds a new customer to the database
   ...              and then reads the newly created entry from the database
   [Setup]  Get JSON Template  customer.json
-  Given customer name is "Selänne"
+  Given customer name is "Selanne"
     and firstname is "Teemu"
     and email is "teemu.selanne@gmail.com"
     and street is "Madre Selva LN"
     and city is "San Diego"
   When I add the customer through REST API
    and I get the Customer through REST API
-  Then customer name should be "Selänne"
+  Then customer name should be "Selanne"
    and firstname should be "Teemu"
    and email should be "teemu.selanne@gmail.com"
    and street should be "Madre Selva LN"
@@ -71,14 +71,6 @@ I get the Customer through REST API  [Arguments]  ${cust_id}=${CUSTOMER_ID}
   ${result}=  Get JSON data  /customer  ${cust_id}
   Set Test Variable  ${JSON_CUSTOMER}  ${result}
   [Return]  ${result}
-
-I Add The Customer Through REST API
-  [Documentation]  Adds a new customer to the database. Stores the newly created customer id
-  ...              to a test variable CUSTOMER_ID
-  ${data}=  Replace Variables  ${TEMPLATE}
-  ${result}=  Post JSON data  /customer  ${data}
-  Set Test Variable  ${CUSTOMER_ID}  ${result['id']}
-
 
 Get JSON data  [Arguments]   ${uri}  ${cust_id}
   [Documentation]  Reads the data as JSON object through REST API. The service URI is given as an argument.
@@ -156,3 +148,10 @@ Delete JSON data  [Arguments]  ${uri}  ${id}
 customer should not exist in the database
   ${response} =  Run Keyword And Return Status  I get the Customer through REST API
   Should Be Equal  ${response}  ${FALSE}
+
+I Add The Customer Through REST API
+   [Documentation]  Adds a new customer to the database. Stores the newly created customer id
+   ...              to a test variable CUSTOMER_ID
+   ${data}=  Replace Variables  ${TEMPLATE}
+   ${result}=  Post JSON data  /customer  ${data}
+   Set Test Variable  ${CUSTOMER_ID}  ${result['id']}

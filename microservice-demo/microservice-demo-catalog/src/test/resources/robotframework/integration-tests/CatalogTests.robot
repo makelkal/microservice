@@ -98,6 +98,7 @@ catalog item name is "${name}"
 catalog item price is "${price}"
     Set Test Variable  ${CATALOG_PRICE}  ${price}
 
+
 I add the catalog item through REST API
     [Documentation]  Adds a new catalog item to the database. Stores the newly created catalog id
     ...              to a test variable CATALOG_ID

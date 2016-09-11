@@ -5,13 +5,13 @@ services:
     image: eureka
     expose:
       - "8761"
-  customer:
-    build: ../../../../.
-    image: customer
-    links:
-     - eureka
-    ports:
-      - "9001:8080"
+#  customer:
+#    build: ../../../../.
+#    image: customer
+#    links:
+#     - eureka
+#    ports:
+#      - "9001:8080"
   catalog:
     build: ../../../../.
     image: catalog

@@ -1,0 +1,18 @@
+version: '2'
+services:
+  eureka:
+    image: eureka
+    expose:
+      - "8761"
+  customer:
+    image: customer
+    expose:
+      - "8080"
+    links:
+     - eureka
+  catalog:
+    image: catalog
+    expose:
+      - "8080"
+    links:
+     - eureka

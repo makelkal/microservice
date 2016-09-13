@@ -1,11 +1,20 @@
 version: '2'
 services:
   customer:
+    build: ../../../../../microservice-demo/microservice-demo-customer
     image: customer
     ports:
      - "9090:8080"
     command: /usr/bin/java -Xmx400m -Xms400m -Djava.security.egd=file:/dev/./urandom -Deureka.client.enabled=false -Dribbon.eureka.enabled=false -jar microservice-demo-customer-0.0.1-SNAPSHOT.jar
+#  catalog:
+#    build: ../../../../../microservice-demo/microservice-demo-catalog
+#    image: catalog
+#    links:
+#      - eureka
+#    ports:
+#      - "9002:8080"
   order:
+    build: ../../../../../microservice-demo/microservice-demo-order
     image: order
     ports:
     - "9001:8080"

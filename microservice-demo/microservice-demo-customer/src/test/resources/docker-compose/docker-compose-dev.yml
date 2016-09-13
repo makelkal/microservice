@@ -1,6 +1,7 @@
 version: '2'
 services:
   eureka:
+    build: ../../../../.
     image: eureka
   customer:
     build: ../../../../.
@@ -8,4 +9,4 @@ services:
     links:
      - eureka
     ports:
-     - "9000:8080"
+     - "9001:8080"

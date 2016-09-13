@@ -5,10 +5,10 @@ Library     OperatingSystem
 Library     Collections
 Library     String
 
-Test Setup  Open Browser And Navigate to Add Order Page
+Test Setup  Open Browser And Navigate to Main Page
 Suite Setup  Initialize Session
 Suite Teardown  Delete All Sessions
-#Test Teardown  Close Browser
+Test Teardown  Close Browser
 
 *** Variables ***
 # Execution specific
@@ -16,13 +16,19 @@ ${BROWSER}                        chrome
 ${REMOTE_URL}                     ${EMPTY}
 ${ORDER_URL}
 ${CUSTOMER_SERVICE_URL}
-${CATALOG_SERVICE_URL}
-${CATALOG_LISTVIEW_XPATH}  //div[contains(text(),'List / add / remove items')]/..//a[contains(text(),'Catalog')]
+${CATALOG_SERVICE_URL}  http://localhost:9002
 
 *** Test Cases ***
 Order a product from a catalog
   Given product "Torspo" is added to the catalog
     And customer "Teemu Selanne" is added
+  Given order by "Teemu Selanne" should not exist
+   #And product "Torspo" should not be in the catalog
+   And product "Torspo" should not be in the catalog through REST API
+   #And customer "Teemu Selanne" should not exist
+   And customer "Teemu Selanne" should not exist through REST API
+   And product "Torspo" is added to the catalog
+   And customer "Teemu Selanne" is added
   When I order product "Torspo"
     And I select customer "Teemu Selanne"
     And I submit the order
@@ -39,12 +45,27 @@ Order a product from a catalog
 #  When I press delete of item "Montreal" in catalog
 #  Then item "Montreal" is not visible in the catalog
 
-#Add item to catalog
-#  Given item "Bauer" should not be in the catalog
-#  When I add item "Bauer"
-#   I set item price "98" to
-#   And I submit the item
-#  Then I can see my item "Bauer" in the catalog
+Delete an existing order
+  Given order by "Jari Kurri" should not exist
+    And product "Koho" should not be in the catalog
+    And customer "Jari Kurri" should not exist
+    And product "Koho" is ordered by "Jari Kurri"
+  When I have an order "Koho" for "Jari Kurri"
+    And I press delete button for "Jari Kurri" order
+  Then I can verify my order for "Jari Kurri" is deleted
+
+Remove item from catalog
+  Given product "Montreal" should not be in the catalog
+    And product "Montreal" is added to the catalog
+  When I press delete of item "Montreal" in catalog
+  Then item "Montreal" is not visible in the catalog
+
+Add item to catalog
+  Given item "Bauer" should not be in the catalog
+  When I add item "Bauer"
+    And I set item price "89" to
+    And I submit the item
+  Then I can see my item "Bauer" in the catalog
 
 *** Keywords ***
 Get JSON Template  [Arguments]  ${form}
@@ -212,4 +233,128 @@ I can see my item "${catalog_item}" in the catalog
   Page Should Contain  ${catalog_item}
 
 
+
+
+I find deleteable catalog items from JSON  [Arguments]  ${catalog_item_name_searched}  ${json}
+  @{removable_catalog_id_list} =  Create List
+  Log  ${removable_catalog_id_list}
+  ${length}=  Get Length  ${json['_embedded']['catalog']}
+
+  :FOR  ${INDEX}  IN RANGE  0  ${length}
+    \  Log  ${catalog_item_name_searched}
+    \  ${catalog_name_found}=  Set Variable  ${json['_embedded']['catalog'][${INDEX}]['name']}
+    \  ${passed}=  Run Keyword And Return Status  Should Not Be Equal As Strings  ${catalog_item_name_searched}  ${catalog_name_found}
+    \  ${removable_catalog_id}=  Set Variable  ${json['_embedded']['catalog'][${INDEX}]['id']}
+    \  Run Keyword Unless  ${passed}  Append To List  ${removable_catalog_id_list}  ${removable_catalog_id}
+
+  Log  ${removable_catalog_id_list}
+  Set Test Variable  ${CATALOG_ID_LIST}  ${removable_catalog_id_list}
+  [Return]  ${removable_catalog_id_list}
+
+I delete the catalog item through REST API  [Arguments]  ${id}=${CATALOG_ID}
+    [Documentation]  Deletes catalog item from the database.
+    ${result}=  Delete JSON data  catalogsrv  /catalog  ${id}
+
+Delete JSON data  [Arguments]  ${service}  ${uri}  ${id}
+  [Documentation]  Removes the object identfied by id through REST api
+  Log  ${id}
+  ${resp}=  Delete Request  ${service}  ${uri}/${id}
+  Should Be Equal As Strings  ${resp.status_code}  204
+
+I add the catalog item through REST API
+    [Documentation]  Adds a new catalog item to the database. Stores the newly created catalog id
+    ...              to a test variable CATALOG_ID
+    ${data}=  Replace Variables  ${TEMPLATE}
+    ${result}=  Post JSON data  catalogsrv  /catalog  ${data}
+    Set Test Variable  ${CATALOG_ID}  ${result['id']}
+
+catalog item name is "${name}"
+    Set Test Variable  ${CATALOG_ITEM}  ${name}
+
+catalog item price is "${price}"
+    Set Test Variable  ${CATALOG_PRICE}  ${price}
+
+catalog item should not exist in the database
+  ${response} =  Run Keyword And Return Status  I get the catalog item through REST API
+  Should Be Equal  ${response}  ${FALSE}
+
+Get JSON data  [Arguments]   ${uri}  ${cust_id}
+    [Documentation]  Reads the data as JSON object through REST API. The service URI is given as an argument.
+    ...              Customer id is given as second argument
+    ...              Returns also the received JSON object
+    ${resp}=  Get Request  appsrv  ${uri}/${cust_id}
+    Should Be Equal As Strings  ${resp.status_code}  200
+    ${actual}=  To Json  ${resp.content}
+    Log  ${resp.content}
+    [Return]  ${actual}
+
+I delete the catalog items through REST API  [Arguments]  ${catalog_id_list}=${CATALOG_ID_LIST}
+  : FOR  ${item}  IN  @{catalog_id_list}
+  \  Log  ${item}
+  \  Log  ${catalog_id_list}
+  \  Run Keyword If  '${item}' != ''  I delete the catalog item through REST API  ${item}
+
+customer "${customer}" should not exist through REST API
+  When I get all customers through REST API
+   And I find deleteable customers from JSON  ${customer}  ${JSON_CUSTOMER}
+  Then I delete the customers through REST API  ${CUSTOMER_ID_LIST}
+
+I get all customers through REST API
+  [Documentation]  Reads all the customers from the database.
+  ${result}=  Get JSON data without id  custsrv  /customer
+  Set Test Variable  ${JSON_CUSTOMER}  ${result}
+  Log  ${result}
+  [Return]  ${result}
+
+I find deleteable customers from JSON  [Arguments]  ${customer_item_name_searched}  ${json}
+  @{removable_customer_id_list} =  Create List
+  Log  ${removable_customer_id_list}
+  ${length}=  Get Length  ${json['_embedded']['customer']}
+
+  :FOR  ${INDEX}  IN RANGE  0  ${length}
+    \  Log  ${customer_item_name_searched}
+    \  ${customer_lastname}=  Set Variable  ${json['_embedded']['customer'][${INDEX}]['name']}
+    \  ${customer_firstname}=  Set Variable  ${json['_embedded']['customer'][${INDEX}]['firstname']}
+    \  ${customer_name_found}=  Catenate  ${customer_firstname}  ${customer_lastname}
+    \  ${passed}=  Run Keyword And Return Status  Should Not Be Equal As Strings  ${customer_item_name_searched}  ${customer_name_found}
+    \  ${removable_customer_id}=  Set Variable  ${json['_embedded']['customer'][${INDEX}]['id']}
+    \  Run Keyword Unless  ${passed}  Append To List  ${removable_customer_id_list}  ${removable_customer_id}
+
+  Log  ${removable_customer_id_list}
+  Set Test Variable  ${CUSTOMER_ID_LIST}  ${removable_customer_id_list}
+  [Return]  ${removable_customer_id_list}
+
+I delete the customers through REST API  [Arguments]  ${customer_id_list}=${CUSTOMER_ID_LIST}
+    [Documentation]  Deletes several customers from the database.
+  : FOR  ${item}  IN  @{customer_id_list}
+  \  Log  ${item}
+  \  Log  ${customer_id_list}
+  #\  Run Keyword If  '${item}' != ''  I delete the customer through REST API  ${item}
+  \  I delete the customer through REST API  ${item}
+
+I delete the customer through REST API  [Arguments]  ${id}=${CUSTOMER_ID}
+    [Documentation]  Deletes single customer from the database.
+    ${result}=  Delete JSON data  custsrv  /customer  ${id}
+
+I Add The Customer Through REST API
+   [Documentation]  Adds a new customer to the database. Stores the newly created customer id
+   ...              to a test variable CUSTOMER_ID
+   ${data}=  Replace Variables  ${TEMPLATE}
+   ${result}=  Post JSON data  custsrv  /customer  ${data}
+   Set Test Variable  ${CUSTOMER_ID}  ${result['id']}
+
+Customer name is "${name}"
+  Set Test Variable  ${NAME}  ${name}
+
+Firstname is "${name}"
+  Set Test Variable  ${FIRSTNAME}  ${name}
+
+Email is "${email}"
+  Set Test Variable  ${EMAIL}  ${email}
+
+Street is "${street}"
+  Set Test Variable  ${STREET}  ${street}
+
+City is "${city}"
+  Set Test Variable  ${CITY}  ${city}
 

@@ -10,7 +10,7 @@ production:
   custom_cmd:
     - true
 
-  post_stage:
-      custom_cmd:
-        - true
+#  post_stage:
+#      custom_cmd:
+#        - true
   

@@ -30,6 +30,6 @@ integration_testing:
       type: parallel
       test_services:
         selenium_grid: false
-        service_virtualization: false
+        service_virtualization: true
 
     

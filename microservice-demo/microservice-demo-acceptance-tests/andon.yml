@@ -48,8 +48,6 @@ acceptance_testing:
 #    mari_file_names:
 #      - bookapprest.mari
   
-<<<<<<< HEAD
-=======
 #production:
 #  dependency:
 #   - Microservice_Acceptance [AcceptanceTestStage]
@@ -67,5 +65,3 @@ acceptance_testing:
 #    - sudo docker push eekamak/eureka
 #    - sudo docker tag zuul eekamak/zuul
 #    - sudo docker push eekamak/zuul
-
->>>>>>> refs/remotes/origin/master

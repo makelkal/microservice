@@ -19,10 +19,10 @@ integration_testing:
     - java:8
     - maven
   
-#  service_virtualization:
-#    mari_file_path: src/test/resources/service-virtualization/VirtualServices  
-#    mari_file_names:
-#      - catalog.mari
+  service_virtualization:
+    mari_file_path: src/test/resources/service-virtualization/VirtualServices  
+    mari_file_names:
+      - catalog.mari
       
   tests:
     - test_commands:

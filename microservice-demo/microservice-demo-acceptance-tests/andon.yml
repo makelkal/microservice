@@ -13,6 +13,7 @@ acceptance_testing:
 #  cron_timer: 0 0 22 ? * MON-FRI
   post_stage:
     custom_cmd:
+      - echo $tag
       - sudo docker tag catalog eekamak/catalog:$tag
       - sudo docker push eekamak/catalog:$tag
       - sudo docker tag customer eekamak/customer:$tag

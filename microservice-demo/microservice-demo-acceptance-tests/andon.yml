@@ -11,18 +11,18 @@ acceptance_testing:
     - maven
   
 #  cron_timer: 0 0 22 ? * MON-FRI
-#  post_stage:
-#    custom_cmd:
-#      - sudo docker tag catalog eekamak/catalog
-#      - sudo docker push eekamak/catalog
-#      - sudo docker tag customer eekamak/customer
-#      - sudo docker push eekamak/customer
-#      - sudo docker tag order eekamak/order
-#      - sudo docker push eekamak/order
-#      - sudo docker tag customer eekamak/eureka
-#      - sudo docker push eekamak/eureka
-#      - sudo docker tag order eekamak/zuul
-#      - sudo docker push eekamak/zuul
+  post_stage:
+    custom_cmd:
+      - sudo docker tag catalog eekamak/catalog:$TAG
+      - sudo docker push eekamak/catalog:$TAG
+      - sudo docker tag customer eekamak/customer:$TAG
+      - sudo docker push eekamak/customer:$TAG
+      - sudo docker tag order eekamak/order:$TAG
+      - sudo docker push eekamak/order:$TAG
+      - sudo docker tag customer eekamak/eureka:$TAG
+      - sudo docker push eekamak/eureka:$TAG
+      - sudo docker tag order eekamak/zuul:$TAG
+      - sudo docker push eekamak/zuul:$TAG
 
   tests:
     - test_commands:

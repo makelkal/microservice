@@ -8,4 +8,4 @@ production:
   go_cd_agent_props:
     - ansible
   custom_cmd:
-    - true
+    - ansible-playbook -i ./ansible-scripts/inventory ./ansible-scripts/microservice-playbook.yml

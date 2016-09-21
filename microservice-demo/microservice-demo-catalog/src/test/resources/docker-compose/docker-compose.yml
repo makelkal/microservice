@@ -11,7 +11,7 @@ services:
     links:
      - eureka
   catalog:
-    image: catalog:$GO_REVISION
+    image: "catalog:${tag}"
     expose:
       - "8080"
     links:

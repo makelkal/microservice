@@ -14,16 +14,16 @@ acceptance_testing:
   post_stage:
     custom_cmd:
       - sudo docker login -u eekamak -p $passu
-      - sudo docker tag catalog eekamak/catalog:$tag
-      - sudo docker push eekamak/catalog:$tag
-      - sudo docker tag customer eekamak/customer:$tag
-      - sudo docker push eekamak/customer:$tag
-      - sudo docker tag order eekamak/order:$tag
-      - sudo docker push eekamak/order:$tag
-      - sudo docker tag customer eekamak/eureka:$tag
-      - sudo docker push eekamak/eureka:$tag
-      - sudo docker tag order eekamak/zuul:$tag
-      - sudo docker push eekamak/zuul:$tag
+      - sudo docker tag catalog:$GO_REVISION eekamak/catalog:$GO_REVISION
+      - sudo docker push eekamak/catalog:$GO_REVISION
+      - sudo docker tag customer eekamak/customer:$GO_REVISION
+      - sudo docker push eekamak/customer:$GO_REVISION
+      - sudo docker tag order eekamak/order:$GO_REVISION
+      - sudo docker push eekamak/order:$GO_REVISION
+      - sudo docker tag customer eekamak/eureka:$GO_REVISION
+      - sudo docker push eekamak/eureka:$GO_REVISION
+      - sudo docker tag order eekamak/zuul:$GO_REVISION
+      - sudo docker push eekamak/zuul:$GO_REVISION
 
   tests:
     - test_commands:

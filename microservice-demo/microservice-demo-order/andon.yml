@@ -10,7 +10,7 @@ docker_image_build_for_integration_testing:
   build_path: .
   dockerfile_name: Dockerfile
   image_name: order
-  image_tag: latest
+  image_tag: $GO_REVISION_ORDER
 
 integration_testing:
   compose_file_path: /src/test/resources

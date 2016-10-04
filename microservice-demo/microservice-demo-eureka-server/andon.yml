@@ -10,3 +10,4 @@ docker_image_build_for_integration_testing:
   build_path: .
   dockerfile_name: Dockerfile
   image_name: eureka
+  image_tag: $GO_REVISION_EUREKA

@@ -14,8 +14,8 @@ acceptance_testing:
   post_stage:
     custom_cmd:
       - sudo docker login -u eekamak -p $passu
-      - sudo docker tag catalog:$GO_REVISION eekamak/catalog:$GO_REVISION
-      - sudo docker push eekamak/catalog:$GO_REVISION
+      - sudo docker tag catalog:$GO_REVISION_Catalog eekamak/catalog:$GO_REVISION_Catalog
+      - sudo docker push eekamak/catalog:$GO_REVISION_Catalog
       - sudo docker tag customer eekamak/customer:$GO_REVISION
       - sudo docker push eekamak/customer:$GO_REVISION
       - sudo docker tag order eekamak/order:$GO_REVISION

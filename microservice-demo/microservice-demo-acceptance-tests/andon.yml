@@ -14,16 +14,16 @@ acceptance_testing:
   post_stage:
     custom_cmd:
       - sudo docker login -u eekamak -p $passu
-      - sudo docker tag catalog:$GO_REVISION_Catalog eekamak/catalog:$GO_REVISION_Catalog
-      - sudo docker push eekamak/catalog:$GO_REVISION_Catalog
-      - sudo docker tag customer eekamak/customer:$GO_REVISION
-      - sudo docker push eekamak/customer:$GO_REVISION
-      - sudo docker tag order eekamak/order:$GO_REVISION
-      - sudo docker push eekamak/order:$GO_REVISION
-      - sudo docker tag customer eekamak/eureka:$GO_REVISION
-      - sudo docker push eekamak/eureka:$GO_REVISION
-      - sudo docker tag order eekamak/zuul:$GO_REVISION
-      - sudo docker push eekamak/zuul:$GO_REVISION
+      - sudo docker tag catalog:$GO_REVISION_CATALOG eekamak/catalog:$GO_REVISION_CATALOG
+      - sudo docker push eekamak/catalog:$GO_REVISION_CATALOG
+      - sudo docker tag customer:$GO_REVISION_CUSTOMER eekamak/customer:$GO_REVISION_CUSTOMER
+      - sudo docker push eekamak/customer:$GO_REVISION_CUSTOMER
+      - sudo docker tag order:$GO_REVISION_ORDER eekamak/order:$GO_REVISION_ORDER
+      - sudo docker push eekamak/order:$GO_REVISION_ORDER
+      - sudo docker tag eureka:$GO_REVISION_EUREKA eekamak/eureka:$GO_REVISION_EUREKA
+      - sudo docker push eekamak/eureka:$GO_REVISION_EUREKA
+      - sudo docker tag zuul:$GO_REVISION_ZUUL eekamak/zuul:$GO_REVISION_ZUUL
+      - sudo docker push eekamak/zuul:$GO_REVISION_ZUUL
 
   tests:
     - test_commands:

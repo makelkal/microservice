@@ -1,11 +1,11 @@
 version: '2'
 services:
   eureka:
-    image: eureka
+    image: "eureka:${GO_REVISION_EUREKA}"
     expose:
       - "8761"
   customer:
-    image: customer
+    image: "customer:${GO_REVISION_CUSTOMER}"
     expose:
       - "8080"
     links:

@@ -3,7 +3,7 @@ services:
   eureka:
     image: eureka
   customer:
-    image: customer:latest
+    image: customer:$GO_REVISION_CUSTOMER
     links:
      - eureka
     expose:

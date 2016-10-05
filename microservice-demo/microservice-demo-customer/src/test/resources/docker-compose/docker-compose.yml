@@ -1,7 +1,7 @@
 version: '2'
 services:
   eureka:
-    image: eureka
+    image: eureka:$GO_REVISION_EUREKA
   customer:
     image: customer:$GO_REVISION_CUSTOMER
     links:

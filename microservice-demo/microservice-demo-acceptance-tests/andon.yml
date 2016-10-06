@@ -31,6 +31,7 @@ acceptance_testing:
       type: parallel
       test_services:
         selenium_grid: true
+        owasp_zap: true
 #        service_virtualization: true
 #    - test_commands:
 #      - true

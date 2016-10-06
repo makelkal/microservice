@@ -14,11 +14,12 @@
 <properties>
        <robot.browser>chrome</robot.browser>                           <!-- Local default browser -->
        <robot.tag></robot.tag>
-       <robot.remote_url>None</robot.remote_url>                        <!-- Selenium GRID hub address -->
+       <robot.remote_url>False</robot.remote_url>                        <!-- Selenium GRID hub address -->
        <robot.main.url>http://localhost:8080</robot.main.url>              <!-- SUT -->
        <robot.order.url>http://localhost:8080/order/</robot.order.url>              <!-- SUT -->
        <robot.customer_rest_url>http://localhost:9001</robot.customer_rest_url>
        <robot.catalog_rest_url>http://localhost:9002</robot.catalog_rest_url>
+	   <robot.desired_capabilities>None</robot.desired_capabilities>
    </properties>
 
  <dependencies>
@@ -59,11 +60,16 @@
 		          <artifactId>robotframework-maven-plugin</artifactId>
 		          <version>1.4.6</version>
 		          <executions>
-		            <execution>
+					  <execution>
+					  <id>selenium</id>
+					  <phase>integration-test</phase>
+					  <goals><goal>run</goal></goals>
+				  </execution>
+		            <!--execution>
 		              <goals>
 		                <goal>run</goal>
 		              </goals>
-		            </execution>
+		            </execution-->
 		          </executions>
 		          <configuration>
 		            <testCasesDirectory>${project.basedir}/src/main/resources</testCasesDirectory>
@@ -81,6 +87,7 @@
 		               <variable>ORDER_URL:${robot.order.url}</variable>
 		               <variable>CUSTOMER_SERVICE_URL:${robot.customer_rest_url}</variable>
 		               <variable>CATALOG_SERVICE_URL:${robot.catalog_rest_url}</variable>
+					   <variable>DESIRED_CAPABILITIES:${robot.desired_capabilities}</variable>
 		          </variables>
 		          </configuration>
 		        </plugin>
@@ -88,6 +95,38 @@
 		   </build>
 	  
       </profile>
+	  <profile>
+		  <id>zap</id>
+		  <properties>
+			  <robot.desired_capabilities>{"proxy":{"proxyType":"manual","httpProxy":"${robot.http_proxy_host}:${robot.http_proxy_port}"}}</robot.desired_capabilities>
+			  <robot.http_proxy_port>8000</robot.http_proxy_port>
+			  <robot.http_proxy_host>localhost</robot.http_proxy_host>
+		  </properties>
+		  <build>
+		  <plugins>
+			  <plugin>
+				  <groupId>br.com.softplan.security.zap</groupId>
+				  <artifactId>zap-maven-plugin</artifactId>
+				  <version>1.2.1-0</version>
+				  <configuration>
+					  <targetUrl>${robot.main.url}</targetUrl>
+					  <zapPort>${robot.http_proxy_port}</zapPort>
+					  <zapHost>${robot.http_proxy_host}</zapHost>
+					  <activeScanStartingPointUrl>${robot.main.url}</activeScanStartingPointUrl>
+					  <shouldStartNewSession>false</shouldStartNewSession>
+				  </configuration>
+				  <executions>
+					  <execution>
+						  <id>selenium-analyze</id>
+						  <phase>post-integration-test</phase>
+						  <goals><goal>seleniumAnalyze</goal></goals>
+					  </execution>
+				  </executions>
+			  </plugin>
+		  </plugins>
+		  </build>
+
+	  </profile>
 
   </profiles>
 

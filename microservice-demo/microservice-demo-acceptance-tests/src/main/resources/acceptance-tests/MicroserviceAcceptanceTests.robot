@@ -21,6 +21,7 @@ ${CATALOG_SERVICE_URL}  http://localhost:9002
 
 *** Test Cases ***
 Order a product from a catalog
+  [Tags]
   Given order by "Teemu Selanne" should not exist
    #And product "Torspo" should not be in the catalog
    And product "Torspo" should not be in the catalog through REST API
@@ -49,6 +50,7 @@ Remove item from catalog
   Then item "Montreal" is not visible in the catalog
 
 Add item to catalog
+  [Tags]
   Given item "Bauer" should not be in the catalog
   When I add item "Bauer"
     And I set item price "89" to
@@ -73,8 +75,7 @@ Initialize Session
 Open Browser And Navigate to Add Order Page
   [Documentation]
   ${remote}=  Get Variable Value  ${REMOTE_URL}  None
-  Run Keyword If  "${remote}"=="None"   Open Browser   ${ORDER_URL}  ${BROWSER}  None
-  Run Keyword Unless  "${remote}"=="None"  Open Browser  ${ORDER_URL}  ${BROWSER}  None  ${REMOTE_URL}
+  Open Browser  ${MAIN_URL}  ${BROWSER}  None  ${REMOTE_URL}  ${DESIRED_CAPABILITIES}  None
   :FOR  ${INDEX}  IN RANGE  1  10
   \  ${passed}=  Run Keyword And Return Status  Wait Until Page Contains  Order : View all  5s
   \  Run Keyword Unless  ${passed}  Reload Page
@@ -87,8 +88,7 @@ Open Browser And Navigate to Add Order Page
 Open Browser And Navigate to Main Page
   [Documentation]
   ${remote}=  Get Variable Value  ${REMOTE_URL}  None
-  Run Keyword If  "${remote}"=="None"   Open Browser   ${MAIN_URL}  ${BROWSER}  None
-  Run Keyword Unless  "${remote}"=="None"  Open Browser  ${MAIN_URL}  ${BROWSER}  None  ${REMOTE_URL}
+  Open Browser  ${MAIN_URL}  ${BROWSER}  None  ${REMOTE_URL}  ${DESIRED_CAPABILITIES}  None
   :FOR  ${INDEX}  IN RANGE  1  10
   \  ${passed}=  Run Keyword And Return Status  Wait Until Page Contains  Order Processing  5s
   \  Run Keyword Unless  ${passed}  Reload Page

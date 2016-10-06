@@ -27,9 +27,7 @@ acceptance_testing:
 
   tests:
     - test_commands:
-      - mvn clean -P robot -D robot.browser=chrome -D robot.remote_url=http://hub:4444/wd/hub -D robot.order.url=http://zuul:8080/order/ -D robot.main.url=http://zuul:8080 -D robot.catalog_rest_url=http://catalog:8080 -D robot.customer_rest_url=http://customer:8080 clean install
-#      - mvn clean -P robot -D robot.browser=chrome -D robot.remote_url=http://hub:4444/wd/hub -D robot.url=http://zuul:8080/order/ -D robot.catalog_rest_url=http://catalog:8080 -D robot.customer_rest_url=http://customer:8080 clean install
-#      - mvn -P robot -D variable.robot=SUT_HOST:zuul,SUT_PORT:8080,BROWSER=firefox org.robotframework:robotframework-maven-plugin:run
+      - mvn clean -Probot,zap -Drobot.http_proxy_port=8000 -Drobot.http_proxy_host=zap -Drobot.browser=chrome -Drobot.remote_url=http://hub:4444/wd/hub -Drobot.order.url=http://zuul:8080/order/ -Drobot.main.url=http://zuul:8080 -Drobot.catalog_rest_url=http://catalog:8080 -Drobot.customer_rest_url=http://customer:8080 clean install
       type: parallel
       test_services:
         selenium_grid: true

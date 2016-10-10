@@ -1,7 +1,7 @@
 version: '2'
 services:
   customer:
-    image: customer:$GO_REVISION_CUSTOMER
+    image: customer:latest
     expose:
      - "8080"
     command: /usr/bin/java -Xmx400m -Xms400m -Djava.security.egd=file:/dev/./urandom -Deureka.client.enabled=false -Dribbon.eureka.enabled=false -jar microservice-demo-customer-0.0.1-SNAPSHOT.jar

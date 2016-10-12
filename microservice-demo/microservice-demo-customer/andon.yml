@@ -24,3 +24,7 @@ integration_testing:
         selenium_grid: false
         service_virtualization: false
   
+  post_stage:
+    custom_cmd:
+      - sudo docker login -u eekamak -p $passu
+      - sudo docker tag customer:$GO_REVISION_CUSTOMER customer:latest

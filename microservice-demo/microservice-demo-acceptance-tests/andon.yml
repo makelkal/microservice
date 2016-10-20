@@ -1,3 +1,6 @@
+general:
+  whitelist: true
+  
 acceptance_testing:
   dependency:
    - Catalog [CompileAndUnitTests]

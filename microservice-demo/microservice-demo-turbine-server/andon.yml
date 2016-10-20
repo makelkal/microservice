@@ -1,3 +1,6 @@
+general:
+  whitelist: true
+  
 compile_and_unit_tests:
   build_cmd: mvn clean -Dmaven.test.skip install
   build_path: .

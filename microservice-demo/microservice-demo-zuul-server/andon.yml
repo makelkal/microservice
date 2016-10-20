@@ -1,3 +1,6 @@
+general:
+  whitelist: true
+  
 compile_and_unit_tests: 
   build_cmd: mvn clean -Djava.security.egd=file:/dev/./urandom install
   build_path: .

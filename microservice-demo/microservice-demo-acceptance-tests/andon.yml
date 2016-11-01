@@ -104,7 +104,7 @@ acceptance_testing:
   
 #  cron_timer: 0 0 22 ? * MON-FRI
   
-  post_stage:
+post_stage:
   go_cd_agent_props:
     - java:8
     - maven

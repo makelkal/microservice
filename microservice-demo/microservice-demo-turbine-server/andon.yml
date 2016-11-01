@@ -1,14 +1,33 @@
 general:
   whitelist: true
+  pipeline_base_name: Turbine
+#  dependency:
+#   - Pipeline X [Stage X]
+#   - Pipeline Y [Stage Y]
   
-compile_and_unit_tests:
-  build_cmd: mvn clean -Dmaven.test.skip install
-  build_path: .
+#pre_stage:
+#  go_cd_agent_props:
+#    - java:8
+#    - maven
+#  custom_cmd:
+#    - true
+#    - true
+  
+compile:
   go_cd_agent_props:
     - java:8
     - maven
   sonarqube: true
+  type: parallel
+  commands:
+    - tasks:
+      - cmd: mvn clean -Dmaven.test.skip -Djava.security.egd=file:/dev/./urandom install
+        build_path: .
   
-docker_image_build_for_integration_testing:
-  build_path: .
-  dockerfile_name: Dockerfile
+#post_stage:
+#  go_cd_agent_props:
+#    - java:8
+#    - maven
+#  custom_cmd:
+#    - true
+#    - true

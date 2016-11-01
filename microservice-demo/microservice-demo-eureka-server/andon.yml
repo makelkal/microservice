@@ -1,16 +1,36 @@
 general:
   whitelist: true
+  pipeline_base_name: Eureka
+#  dependency:
+#   - Pipeline X [Stage X]
+#   - Pipeline Y [Stage Y]
   
-compile_and_unit_tests: 
-  build_cmd: mvn clean -Djava.security.egd=file:/dev/./urandom install
-  build_path: .
+#pre_stage:
+#  go_cd_agent_props:
+#    - java:8
+#    - maven
+#  custom_cmd:
+#    - true
+#    - true
+  
+compile:
   go_cd_agent_props:
     - java:8
     - maven
   sonarqube: true
+  type: parallel
+  commands:
+    - tasks:
+      - cmd: mvn clean -Djava.security.egd=file:/dev/./urandom install
+        build_path: .
+#      - cmd: true
+#      - cmd: true
+#        build_path: .
   
-docker_image_build_for_integration_testing:
-  build_path: .
-  dockerfile_name: Dockerfile
-  image_name: eureka
-  image_tag: $GO_REVISION_EUREKA
+#post_stage:
+#  go_cd_agent_props:
+#    - java:8
+#    - maven
+#  custom_cmd:
+#    - true
+#    - true

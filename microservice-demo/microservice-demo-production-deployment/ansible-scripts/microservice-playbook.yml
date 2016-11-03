@@ -29,4 +29,6 @@
     command: docker-compose pull chdir={{ andon_home }}
 
   - name: Start the docker services
-    docker_service: project_src={{ andon_home }} state=present
+    command: docker-compose -f docker-compose.yml up -d  chdir={{ andon_home }}
+
+#    docker_service: project_src={{ andon_home }} state=present

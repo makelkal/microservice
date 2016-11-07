@@ -39,15 +39,15 @@ integration_testing:
     go_cd_agent_props:
       - java:8
       - maven
-    type: serial
+    type: paralle
     test_services:
       selenium_grid: false
       service_virtualization: false
     commands:
       - test_commands:
         - mvn -P Robot -D service_url=http://customer:8080 install
-      - test_commands:
-        - true
+#      - test_commands:
+#        - true
   
 post_stage:
   go_cd_agent_props:

@@ -11,7 +11,7 @@ services:
 #    links:
 #     - eureka
   catalog:
-    image: "catalog:${GO_REVISION_CATALOG}"
+    image: "catalog:${GO_PIPELINE_COUNTER}"
     expose:
       - "8080"
 #    links:

@@ -4,36 +4,36 @@ general:
   dependency:
    - Microservice_Acceptance [AcceptanceTestStage]
 
-pre_stage:
-  go_cd_agent_props:
-    - java:8
-    - maven
-  custom_cmd:
-    - true
-    - true
+#pre_stage:
+#  go_cd_agent_props:
+#    - java:8
+#    - maven
+#  custom_cmd:
+#    - true
+#    - true
 
 production:
   go_cd_agent_props:
     - ansible
   trigger_mode: manual
-  type: serial
+  type: parallel
   commands:
     - tasks:
       - cmd: ansible-playbook -i ansible-scripts/inventory ansible-scripts/microservice-playbook.yml
-        build_path: .
-      - cmd: docker 1
+#        build_path: .
+#      - cmd: docker 1
 #      job_name: AnsibleJob
-    - tasks:
-      - cmd: mvn 2
-        build_path: .
+#    - tasks:
+#      - cmd: mvn 2
+#        build_path: .
 #      - cmd: docker 2
 #        build_path: .
 #      job_name: RunJob
 
-post_stage:
-  go_cd_agent_props:
-    - java:8
-    - maven
-  custom_cmd:
-    - true
-    - true
+#post_stage:
+#  go_cd_agent_props:
+#    - java:8
+#    - maven
+#  custom_cmd:
+#    - true
+#    - true

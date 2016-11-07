@@ -1,29 +1,29 @@
 version: '2'
 services:
   eureka:
-    image: eureka:latest
+    image: eekamak/eureka:latest
     expose:
       - "8761"
   customer:
-    image: customer:latest
+    image: customer:$GO_DEPENDENCY_LABEL_Customer
     expose:
       - "8080"
     links:
      - eureka
   catalog:
-    image: catalog:latest
+    image: catalog:$GO_DEPENDENCY_LABEL_Catalog
     expose:
       - "8080"
     links:
      - eureka
   order:
-    image: order:latest
+    image: order:$GO_DEPENDENCY_LABEL_Order
     expose:
       - "8080"
     links:
      - eureka
   zuul:
-    image: zuul:latest
+    image: zuul:$GO_DEPENDENCY_LABEL_Zuul
     links:
      - eureka
     expose:

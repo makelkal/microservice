@@ -8,7 +8,7 @@ production:
   go_cd_agent_props:
     - ansible
   trigger_mode: manual
-  type: parallel
+  type: serial
   commands:
     - tasks:
       - cmd: ansible-playbook -i ansible-scripts/inventory ansible-scripts/microservice-playbook.yml

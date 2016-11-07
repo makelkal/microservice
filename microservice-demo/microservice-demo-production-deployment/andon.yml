@@ -8,5 +8,15 @@ production:
   go_cd_agent_props:
     - ansible
   trigger_mode: manual
-  custom_cmd:
-    - ansible-playbook -i ansible-scripts/inventory ansible-scripts/microservice-playbook.yml
+  type: parallel
+  commands:
+    - tasks:
+      - cmd: ansible-playbook -i ansible-scripts/inventory ansible-scripts/microservice-playbook.yml
+      - cmd: docker 1
+      job_name: AnsibleJob
+    - tasks:
+      - cmd: mvn 2
+        build_path: .
+      - cmd: docker 2
+        build_path: .
+      job_name: RunJob

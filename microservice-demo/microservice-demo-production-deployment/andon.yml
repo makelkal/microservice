@@ -4,6 +4,14 @@ general:
   dependency:
    - Microservice_Acceptance [AcceptanceTestStage]
 
+pre_stage:
+  go_cd_agent_props:
+    - java:8
+    - maven
+  custom_cmd:
+    - true
+    - true
+
 production:
   go_cd_agent_props:
     - ansible
@@ -21,3 +29,11 @@ production:
 #      - cmd: docker 2
 #        build_path: .
 #      job_name: RunJob
+
+post_stage:
+  go_cd_agent_props:
+    - java:8
+    - maven
+  custom_cmd:
+    - true
+    - true

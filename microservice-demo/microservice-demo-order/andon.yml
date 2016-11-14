@@ -41,8 +41,11 @@ integration_testing:
       - maven
     type: parallel
     test_services:
+      owasp_zap: false
       selenium_grid: false
       service_virtualization: true
+      robot_framework: true
+      cucumber: false
     commands:
       - test_commands:
         - mvn -P robot -Drobot.url=http://order:8080 -Drobot.remote_url=http://hub:4444/wd/hub -Drobot.browser=chrome install

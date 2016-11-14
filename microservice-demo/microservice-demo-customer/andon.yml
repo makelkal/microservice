@@ -41,8 +41,11 @@ integration_testing:
       - maven
     type: parallel
     test_services:
+      owasp_zap: false
       selenium_grid: false
       service_virtualization: false
+      robot_framework: true
+      cucumber: false
     commands:
       - test_commands:
         - mvn -P Robot -D service_url=http://customer:8080 install

@@ -26,6 +26,7 @@ compile:
 #      - cmd: true
 #      - cmd: true
 #        build_path: .
+#        run_if_conditions: passed
   
 #post_stage:
 #  go_cd_agent_props:

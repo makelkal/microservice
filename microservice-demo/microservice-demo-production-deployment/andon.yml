@@ -28,6 +28,8 @@ production:
 #        build_path: .
 #      - cmd: docker 2
 #        build_path: .
+#        build_path: .
+#        run_if_conditions: passed
 #      job_name: RunJob
 
 #post_stage:

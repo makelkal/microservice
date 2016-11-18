@@ -24,8 +24,8 @@ compile:
       - cmd: mvn clean -Djava.security.egd=file:/dev/./urandom install
         build_path: .
       - cmd: docker build -f Dockerfile -t customer:$GO_PIPELINE_COUNTER .
-#      - cmd: true
         build_path: .
+#        run_if_conditions: passed
   
 integration_testing:
   compose_file_path: /src/test/resources/docker-compose
@@ -48,9 +48,11 @@ integration_testing:
       cucumber: false
     commands:
       - test_commands:
-        - mvn -P Robot -D service_url=http://customer:8080 install
+        - cmd: mvn -P Robot -D service_url=http://customer:8080 install
 #      - test_commands:
-#        - true
+#        - cmd: true
+#          build_path: .
+#          run_if_conditions: passed
   
 post_stage:
   go_cd_agent_props:

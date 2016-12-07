@@ -56,7 +56,7 @@ integration_testing:
 #          run_if_conditions: passed
 
   selenium:
-#    version: latest
+#    version: "latest"
     browsers:
     - name: chrome
       amount: 1

@@ -47,7 +47,9 @@ acceptance_testing:
 #          build_path: .
 #          run_if_conditions: passed
           
-  selenium_grid_browsers:
+  selenium:
+#    version: "latest"
+    browsers:
     - name: chrome
       amount: 1
       version: "latest"

@@ -18,7 +18,6 @@ compile:
     - java:8
     - maven
   sonarqube: true
-  type: parallel
   stages:
     - stage: Compile
       jobs:

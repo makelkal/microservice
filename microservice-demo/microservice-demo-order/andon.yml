@@ -48,7 +48,7 @@ integration_testing:
       robot_framework: true
       cucumber: false
     stages:
-      - stage: IntegrationTesting
+      - stage: IntegrationTests
         jobs:
           - job: Robot
             build_path: .

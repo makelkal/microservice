@@ -28,26 +28,20 @@ acceptance_testing:
     go_cd_agent_props:
       - java:8
       - maven
-    type: parallel
     test_services:
       owasp_zap: true
       selenium_grid: true
       service_virtualization: false
       robot_framework: true
       cucumber: false
-    commands:
-      - test_commands:
-        - cmd: mvn clean -Probot,zap -Drobot.http_proxy_port=8000 -Drobot.http_proxy_host=zap -Drobot.browser=chrome -Drobot.remote_url=http://hub:4444/wd/hub -Drobot.order.url=http://zuul:8080/order/ -Drobot.main.url=http://zuul:8080 -Drobot.catalog_rest_url=http://catalog:8080 -Drobot.customer_rest_url=http://customer:8080 clean install
-        job_name: ChromeJob
-#      - test_commands:
-#        - cmd: mvn clean -Probot -Drobot.http_proxy_port=8000 -Drobot.http_proxy_host=zap -Drobot.browser=firefox -Drobot.remote_url=http://hub:4444/wd/hub -Drobot.order.url=http://zuul:8080/order/ -Drobot.main.url=http://zuul:8080 -Drobot.catalog_rest_url=http://catalog:8080 -Drobot.customer_rest_url=http://customer:8080 clean install
-#        job_name: FirefoxJob
-#      - test_commands:
-#        - cmd: true
-#      - test_commands:
-#        - cmd: mvn -P robot 2
-#          build_path: .
-#          run_if_conditions: passed
+    stages:
+      - stage: IntegrationTesting
+        jobs:
+          - job: Chrome
+            build_path: .
+            run_if_conditions: passed
+            tasks:
+              - task: mvn clean -Probot,zap -Drobot.http_proxy_port=8000 -Drobot.http_proxy_host=zap -Drobot.browser=chrome -Drobot.remote_url=http://hub:4444/wd/hub -Drobot.order.url=http://zuul:8080/order/ -Drobot.main.url=http://zuul:8080 -Drobot.catalog_rest_url=http://catalog:8080 -Drobot.customer_rest_url=http://customer:8080 clean install
           
   selenium:
 #    version: "latest"

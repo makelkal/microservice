@@ -35,7 +35,7 @@ acceptance_testing:
       robot_framework: true
       cucumber: false
     stages:
-      - stage: IntegrationTesting
+      - stage: AcceptanceTesting
         jobs:
           - job: Chrome
             build_path: .

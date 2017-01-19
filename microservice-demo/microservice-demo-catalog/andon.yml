@@ -40,20 +40,20 @@ integration_testing:
     go_cd_agent_props:
       - java:8
       - maven
-    type: parallel
     test_services:
       owasp_zap: false
       selenium_grid: false
       service_virtualization: false
       robot_framework: true
       cucumber: false
-    commands:
-      - test_commands:
-        - cmd: mvn -P Robot -D service_url=http://catalog:8080 install
-#      - test_commands:
-#        - cmd: mvn -P robot 2
-#          build_path: .
-#          run_if_conditions: passed
+    stages:
+      - stage: IntegartionTesting
+        jobs:
+          - job: Robot
+            build_path: .
+            run_if_conditions: passed
+            tasks:
+              - task: mvn -P Robot -D service_url=http://catalog:8080 install
   
 post_stage:
   go_cd_agent_props:

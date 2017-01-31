@@ -43,9 +43,11 @@ acceptance_testing:
                 build_path: .
                 run_if_conditions: passed
               - task: true
+                build_path: .
+                run_if_conditions: any
               - task: echo 'hello world'
                 build_path: .
-                run_if_conditions: passed
+                run_if_conditions: failed
           
   selenium:
 #    version: "latest"

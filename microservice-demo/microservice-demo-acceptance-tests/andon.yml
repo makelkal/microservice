@@ -38,12 +38,14 @@ acceptance_testing:
       - stage: AcceptanceTesting
         jobs:
           - job: Chrome
-            build_path: .
-            run_if_conditions: passed
             tasks:
               - task: mvn clean -Probot,zap -Drobot.http_proxy_port=8000 -Drobot.http_proxy_host=zap -Drobot.browser=chrome -Drobot.remote_url=http://hub:4444/wd/hub -Drobot.order.url=http://zuul:8080/order/ -Drobot.main.url=http://zuul:8080 -Drobot.catalog_rest_url=http://catalog:8080 -Drobot.customer_rest_url=http://customer:8080 clean install
+                build_path: .
+                run_if_conditions: passed
               - task: true
               - task: echo 'hello world'
+                build_path: .
+                run_if_conditions: passed
           
   selenium:
 #    version: "latest"

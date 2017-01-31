@@ -22,10 +22,10 @@ compile:
     - stage: Compile
       jobs:
         - job: Maven
-          build_path: .
-          run_if_conditions: passed
           tasks:
             - task: mvn clean -Djava.security.egd=file:/dev/./urandom install
+              build_path: .
+              run_if_conditions: passed
   
 #post_stage:
 #  go_cd_agent_props:

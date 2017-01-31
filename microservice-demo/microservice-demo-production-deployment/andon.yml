@@ -20,10 +20,10 @@ production:
     - stage: Production
       jobs:
         - job: Ansible
-          build_path: .
-          run_if_conditions: passed
           tasks:
             - task: ansible-playbook -i ansible-scripts/inventory ansible-scripts/microservice-playbook.yml
+              build_path: .
+              run_if_conditions: passed
 
 #post_stage:
 #  go_cd_agent_props:

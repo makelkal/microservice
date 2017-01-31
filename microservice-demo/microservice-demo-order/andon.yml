@@ -22,11 +22,13 @@ compile:
     - stage: Compile
       jobs:
         - job: Maven_and_Docker
-          build_path: .
-          run_if_conditions: passed
           tasks:
             - task: mvn clean -Djava.security.egd=file:/dev/./urandom install
+              build_path: .
+              run_if_conditions: passed
             - task: docker build -f Dockerfile -t order:$GO_PIPELINE_COUNTER .
+              build_path: .
+              run_if_conditions: passed
   
 integration_testing:
   compose_file_path: /src/test/resources
@@ -51,10 +53,10 @@ integration_testing:
       - stage: IntegrationTests
         jobs:
           - job: Robot
-            build_path: .
-            run_if_conditions: passed
             tasks:
               - task: mvn -P robot -Drobot.url=http://order:8080 -Drobot.remote_url=http://hub:4444/wd/hub -Drobot.browser=chrome install
+                build_path: .
+                run_if_conditions: passed
 
   selenium:
 #    version: "latest"

@@ -51,7 +51,7 @@ integration_testing:
     stages:
       - stage: IntegrationTesting
         jobs:
-            run_if_conditions: passed
+          - job: Robot
             tasks:
               - task: mvn -P Robot -D service_url=http://customer:8080 install
                 build_path: .

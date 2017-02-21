@@ -9,7 +9,7 @@ pre_stage:
   go_cd_agent_props:
     - node:6
   custom_cmd:
-    - node version
+    - npm version
   
 compile:
   go_cd_agent_props:

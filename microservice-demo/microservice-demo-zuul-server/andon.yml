@@ -33,4 +33,3 @@ post_stage:
     - npm:5
   custom_cmd:
     - npm version
-  

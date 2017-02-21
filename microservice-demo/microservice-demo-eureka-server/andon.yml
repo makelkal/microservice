@@ -5,13 +5,11 @@ general:
 #   - Pipeline X [Stage X]
 #   - Pipeline Y [Stage Y]
   
-#pre_stage:
-#  go_cd_agent_props:
-#    - java:8
-#    - maven
-#  custom_cmd:
-#    - true
-#    - true
+pre_stage:
+  go_cd_agent_props:
+    - npm:6
+  custom_cmd:
+    - npm version
   
 compile:
   go_cd_agent_props:
@@ -27,10 +25,8 @@ compile:
               build_path: .
               run_if_conditions: passed
   
-#post_stage:
-#  go_cd_agent_props:
-#    - java:8
-#    - maven
-#  custom_cmd:
-#    - true
-#    - true
+post_stage:
+  go_cd_agent_props:
+    - react
+  custom_cmd:
+    - npm version

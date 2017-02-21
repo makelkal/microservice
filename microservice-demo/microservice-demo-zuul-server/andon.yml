@@ -28,9 +28,9 @@ compile:
               build_path: .
               run_if_conditions: passed
   
-#post_stage:
-#  go_cd_agent_props:
-#    - npm:5
-#  custom_cmd:
-#    - npm version
+post_stage:
+  go_cd_agent_props:
+    - npm:5
+  custom_cmd:
+    - npm version
   

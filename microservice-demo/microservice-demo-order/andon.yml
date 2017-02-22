@@ -73,5 +73,5 @@ post_stage:
     - java:8
     - maven
   custom_cmd:
-      - sudo docker login -u eekamak -p $passu
+#      - sudo docker login -u eekamak -p $passu
       - sudo docker tag order:$GO_PIPELINE_COUNTER order:latest

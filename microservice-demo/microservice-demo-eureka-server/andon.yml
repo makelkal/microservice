@@ -5,11 +5,11 @@ general:
 #   - Pipeline X [Stage X]
 #   - Pipeline Y [Stage Y]
   
-pre_stage:
-  go_cd_agent_props:
-    - node:6
-  custom_cmd:
-    - npm version
+#pre_stage:
+#  go_cd_agent_props:
+#    - node:6
+#  custom_cmd:
+#    - npm version
   
 compile:
   go_cd_agent_props:

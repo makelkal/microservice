@@ -50,8 +50,8 @@ integration_testing:
       robot_framework: true
       cucumber: false
       browser_stack:
-        key: 23epohepsho
-        local_identifier: Test123
+        key: HEA8tMFKN6bSUyhBriQD
+        local_identifier: andon1
     stages:
       - stage: IntegrationTests
         jobs:

@@ -34,6 +34,9 @@ acceptance_testing:
       service_virtualization: false
       robot_framework: true
       cucumber: false
+      browser_stack:
+        key: HEA8tMFKN6bSUyhBriQD
+        local_identifier: andon1
     stages:
       - stage: AcceptanceTesting
         jobs:

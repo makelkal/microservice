@@ -23,9 +23,7 @@ ${CATALOG_SERVICE_URL}  http://localhost:9002
 Order a product from a catalog
   [Tags]
   Given order by "Teemu Selanne" should not exist
-   #And product "Torspo" should not be in the catalog
    And product "Torspo" should not be in the catalog through REST API
-   #And customer "Teemu Selanne" should not exist
    And customer "Teemu Selanne" should not exist through REST API
    And product "Torspo" is added to the catalog
    And customer "Teemu Selanne" is added

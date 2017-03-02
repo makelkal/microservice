@@ -28,7 +28,6 @@ acceptance_testing:
     go_cd_agent_props:
       - java:8
       - maven
-    type: parallel
     test_services:
       owasp_zap: true
       selenium_grid: false
@@ -38,30 +37,28 @@ acceptance_testing:
       service_virtualization: false
       robot_framework: true
       cucumber: false
-    commands:
-      - test_commands:
-        - cmd: mvn -Probot -Drobot.remote_url=http://ilpopaju1:qcGwaiyQpFFibmBoyEp3@hub.browserstack.com:80/wd/hub -Drobot.order.url=http://zuul:8080/order/ -Drobot.main.url=http://zuul:8080 -Drobot.catalog_rest_url=http://catalog:8080 -Drobot.customer_rest_url=http://customer:8080 clean install
-#        - cmd: mvn clean -Probot,zap -Drobot.http_proxy_port=8000 -Drobot.http_proxy_host=zap -Drobot.browser=chrome -Drobot.remote_url=http://hub:4444/wd/hub -Drobot.order.url=http://zuul:8080/order/ -Drobot.main.url=http://zuul:8080 -Drobot.catalog_rest_url=http://catalog:8080 -Drobot.customer_rest_url=http://customer:8080 clean install
-         job_name: ChromeJob
-#      - test_commands:
-#        - cmd: mvn clean -Probot -Drobot.http_proxy_port=8000 -Drobot.http_proxy_host=zap -Drobot.browser=firefox -Drobot.remote_url=http://hub:4444/wd/hub -Drobot.order.url=http://zuul:8080/order/ -Drobot.main.url=http://zuul:8080 -Drobot.catalog_rest_url=http://catalog:8080 -Drobot.customer_rest_url=http://customer:8080 clean install
-#        job_name: FirefoxJob
-#      - test_commands:
-#        - cmd: true
-#      - test_commands:
-#        - cmd: mvn -P robot 2
-#          build_path: .
-#          run_if_conditions: passed
+    stages:
+      - stage: AcceptanceTesting
+        jobs:
+          - job: Chrome
+            tasks:
+              - task: mvn -Probot -Drobot.remote_url=http://ilpopaju1:qcGwaiyQpFFibmBoyEp3@hub.browserstack.com:80/wd/hub -Drobot.order.url=http://zuul:8080/order/ -Drobot.main.url=http://zuul:8080 -Drobot.catalog_rest_url=http://catalog:8080 -Drobot.customer_rest_url=http://customer:8080 -Drobot.desired_capabilities="browser:IE,browser_version:11.0,os:Windows,os_version:7,resolution:1024x768,browserstack.local:True,browserstack.localIdentifier=Test123" clean install
+              - task: true
+                build_path: .
+                run_if_conditions: any
+              - task: echo 'hello world'
+                build_path: .
+                run_if_conditions: failed
           
-  selenium:
-#    version: "latest"
-    browsers:
-    - name: chrome
-      amount: 1
-      version: "latest"
-    - name: firefox
-      amount: 1
-      version: "latest"
+#  selenium:
+##    version: "latest"
+#    browsers:
+#    - name: chrome
+#      amount: 1
+#      version: "latest"
+#    - name: firefox
+#      amount: 1
+#      version: "latest"
   
 #  cron_timer: 0 0 22 ? * MON-FRI
   
@@ -70,14 +67,12 @@ post_stage:
     - java:8
     - maven
   custom_cmd:
-    - sudo docker login -u eekamak -p $passu
+#    - sudo docker login -u eekamak -p $passu  # E.g. use secret varibles to login to registries
     - sudo docker tag catalog:$GO_DEPENDENCY_LABEL_CATALOG_MASTER eekamak/catalog:latest
-    - sudo docker push eekamak/catalog:latest
+#    - sudo docker push eekamak/catalog:latest
     - sudo docker tag customer:$GO_DEPENDENCY_LABEL_CUSTOMER_MASTER eekamak/customer:latest
-    - sudo docker push eekamak/customer:latest
+#    - sudo docker push eekamak/customer:latest
     - sudo docker tag order:$GO_DEPENDENCY_LABEL_ORDER_MASTER eekamak/order:latest
-    - sudo docker push eekamak/order:latest
-#    - sudo docker tag eureka:latest eekamak/eureka:latest
-#    - sudo docker push eekamak/eureka:latest
+#    - sudo docker push eekamak/order:latest
     - sudo docker tag zuul:$GO_DEPENDENCY_LABEL_ZUUL_MASTER eekamak/zuul:latest
-    - sudo docker push eekamak/zuul:latest
+#    - sudo docker push eekamak/zuul:latest
